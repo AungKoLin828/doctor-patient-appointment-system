@@ -14,7 +14,7 @@ const UserRegistration = ({ fetchUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/patients', {name, phoneNo, password,age, address, role, specialty});
+      await axios.post('http://localhost:5000/api/user', {name, phoneNo, password,age, address, role, specialty});
       setName('');
       setPhoneNo('');
       setPassword('');
@@ -78,12 +78,12 @@ const UserRegistration = ({ fetchUser }) => {
       </div>
       <div>
         <label>Address:</label>
-        <input
+        <textarea
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           required
-        />
+        ></textarea>
       </div>
       <div>
         <label>Role:</label>
@@ -96,12 +96,14 @@ const UserRegistration = ({ fetchUser }) => {
       </div>
       <div>
         <label>Specialty:</label>
-        <input
-          type="text"
-          value={specialty}
-          onChange={(e) => setSpecialty(e.target.value)}
-          required
-        />
+        <select id="specialty" class="form-select" onChange={(e) => setSpecialty(e.target.value)}>
+          <option value="">Select One</option>
+          <option value="Neurology Specialist">Neurology Specialist</option>
+          <option value="Eye Specialist">Eye Specialist</option>
+          <option value="Heart Specialist">Heart Specialist</option>
+          <option value="Osteoporosis Specialist">Osteoporosis Specialist</option>
+          <option value="ENT Specialist">ENT Specialist</option>
+        </select>
       </div>
       <button type="submit">Add User</button>
     </form>
