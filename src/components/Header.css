@@ -1,54 +1,50 @@
 .header {
-    background-size: cover;
-    background-position: center;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-align: center;
-    position: relative;
-  }
-  
-  .header::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Overlay to darken the image */
-    z-index: 1;
-  }
-  
-  .header-content {
-    position: relative;
-    z-index: 2;
-  }
-  
-  .header h1 {
-    font-size: 3em;
-    margin-bottom: 0.5em;
-    margin-right: 10em;
-  }
-  
-  .header p {
-    font-size: 1.5em;
-    margin-bottom: 1em;
-  }
-  
-  .header-button {
-    background-color: #28a745;
-    color: white;
-    padding: 0.75em 1.5em;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .header-button:hover {
-    background-color: #218838;
-  }
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+  padding: 15px 20px;
+  z-index: 1000;
+}
+
+.header.scrolled {
+  background-color: lightblue;
+  color: white;
+}
+
+.header nav {
+  display: flex;
+  justify-content: flex-end;  /* Align items to the left */
+  width: 90%;
+}
+
+.header nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header nav ul li {
+  margin: 0 15px;
+}
+
+.header nav ul li a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.0em;
+}
+
+.header nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.header h1 {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+  margin-right: 10em;
+}
+
   

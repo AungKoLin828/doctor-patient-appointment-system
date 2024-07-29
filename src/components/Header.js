@@ -1,15 +1,36 @@
-import React from 'react';
-import './Header.css'; // Create a CSS file for styling the banner
+import React, { useState, useEffect } from 'react';
+import './Header.css';
 
 const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="header">
-      <div className="header-content">
-        <h1>Doctor-Patient Appointment System</h1>
-        <p>Schedule your appointments with ease and convenience</p>
-        <button className="header-button">Book Now</button>
-      </div>
-    </div>
+    <header className={isScrolled ? 'header scrolled' : 'header'}>
+      <h1>Doctors & Patients Appointment System</h1>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
   );
 };
 
