@@ -6,8 +6,9 @@ function App() {
   return (
     <div className="App">
        <Header />
-       <div className="body">
-       </div>
+       <div className="content">
+        <h1 className="welcome-text">Welcome to Our Doctor-Patient Appointment System</h1>
+      </div>
       <Footer />
     </div>
   );

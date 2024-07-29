@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p>&copy; 2024 Doctor-Patient Appointment System. All Rights Reserved.</p>
+        <p>&copy; Design & Developed By AungKoLin. 2024 Doctor-Patient Appointment System. All Rights Reserved.</p>
       </div>
     </footer>
   );

@@ -48,12 +48,25 @@ form button:hover {
   background-color: #0056b3;
 }
 
+
 body {
   background-image: url('assets/images/bg-image.jpg'); /* Image in the public folder */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
+  height: 80vh;
   margin: 0;
   font-family: Arial, sans-serif;
 }
+
+.content {
+  text-align: left;
+  color: rgb(127, 110, 134);
+  z-index: 1;
+}
+
+.welcome-text {
+  font-size: 2em;
+  margin-top: 150px;
+}
+
