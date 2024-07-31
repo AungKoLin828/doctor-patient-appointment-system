@@ -10,22 +10,29 @@ const ImageSlider = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 700,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 7000,
+    autoplaySpeed: 5000,
     centerMode: true,
+    centerPadding: '0',
   };
   
   return (
-    <div style={{maxWidth: '95%',alignItems:'center'}}>
+    <div style={{maxWidth: '95%',alignItems:'center'}} className='slider-container'>
     <Slider {...settings}>
       <div>
         <img src={image1} alt="Slide 1" style={{ width: '50%', height: '40%'}} />
       </div>
       <div>
         <img src={image2} alt="Slide 2" style={{ width: '50%', height: '60%'}} />
+      </div>
+      <div>
+        <img src={image3} alt="Slide 2" style={{ width: '50%', height: '40%'}} />
+      </div>
+      <div>
+        <img src={image3} alt="Slide 2" style={{ width: '50%', height: '40%'}} />
       </div>
       <div>
         <img src={image3} alt="Slide 2" style={{ width: '50%', height: '40%'}} />

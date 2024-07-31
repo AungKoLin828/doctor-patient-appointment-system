@@ -3,14 +3,14 @@
     justify-content: center;
     align-items: center;
     height: 100vh; 
-    background-color: #f0f8ff; 
+    background-color: #f0fcff;
   }
   
   .slick-slide img {
     display: block;
     margin: 0 auto;
-    width: 100%; 
-    max-width: 600px; 
+    width: 90%; 
+    max-width: 100px; 
   }
   .slick-dots {
     bottom: -30px; 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
+import logoImg from '../logo.png'
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,7 +22,8 @@ const Header = () => {
 
   return (
     <header className={isScrolled ? 'header scrolled' : 'header'}>
-      <h1>Doctors & Patients Appointment System</h1>
+      
+      <h1><img className='logo-img' src={logoImg} alt="Logo" /> &nbsp; Doctors & Patients Appointments System</h1>
       <nav>
         <ul>
           <li><a href="#home">Home</a></li>

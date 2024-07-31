@@ -47,4 +47,7 @@
   margin-right: 10em;
 }
 
-  
+.logo-img {
+  min-width: 30px;
+  max-height: 30px;
+}
