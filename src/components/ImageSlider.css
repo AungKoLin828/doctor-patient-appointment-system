@@ -1,15 +1,16 @@
 .slider-container {
   width: 100%;
-  max-width: 500px; /* Adjust as needed */
   margin: 0 auto;
-  height: 1000px; 
+  height: 500px; 
+  padding: 20px;
+  max-width: 800px;
 }
   
   .slick-slide img {
     display: block;
     margin: 0 auto;
-    width: 90%; 
-    max-width: 100px; 
+    max-width: 1000px;
+    height: 250px;  
   }
   .slick-dots {
     bottom: -30px; 

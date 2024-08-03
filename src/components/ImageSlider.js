@@ -24,19 +24,19 @@ const ImageSlider = () => {
     <div style={{maxWidth: '95%',alignItems:'center'}} className='slider-container'>
     <Slider {...settings}>
       <div>
-        <img src={image1} alt="Slide 1" style={{ width: '50%', height: '60%'}} />
+        <img src={image1} alt="Slide 1"/>
       </div>
       <div>
-        <img src={image2} alt="Slide 2" style={{ width: '50%', height: '60%'}} />
+        <img src={image2} alt="Slide 2"/>
       </div>
       <div>
-        <img src={image3} alt="Slide 2" style={{ width: '50%', height: '60%'}} />
+        <img src={image3} alt="Slide 2"/>
       </div>
       <div>
-        <img src={image3} alt="Slide 2" style={{ width: '50%', height: '40%'}} />
+        <img src={image3} alt="Slide 2"/>
       </div>
       <div>
-        <img src={image3} alt="Slide 2" style={{ width: '50%', height: '40%'}} />
+        <img src={image3} alt="Slide 2"/>
       </div>
     </Slider>
     </div>

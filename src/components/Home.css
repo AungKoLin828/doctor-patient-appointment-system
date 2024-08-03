@@ -7,13 +7,6 @@
     text-align: center;
   }
     
-  .slider-container {
-    width: 80%;
-    max-width: 500px; 
-    margin: 0 auto;
-    height: 700px; 
-  }
-  
   .welcome-text {
     font-size: 2em;
     margin-top: 150px;
