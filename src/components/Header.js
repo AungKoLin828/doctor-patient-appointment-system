@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom'
 import './Header.css';
 import logoImg from '../logo.png'
 
@@ -26,10 +27,9 @@ const Header = () => {
       <h1><img className='logo-img' src={logoImg} alt="Logo" /> &nbsp; Doctors & Patients Appointments System</h1>
       <nav>
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/about">About</Link></li>
         </ul>
       </nav>
     </header>

@@ -3,20 +3,20 @@
   width: 100%;
   top: 0;
   left: 0;
-  background-color: transparent;
+  background-color: lightblue;
   transition: background-color 0.3s ease;
   padding: 15px 20px;
   z-index: 1000;
 }
 
 .header.scrolled {
-  background-color: lightblue;
+  background-color: rgb(112, 146, 173);
   color: white;
 }
 
 .header nav {
   display: flex;
-  justify-content: flex-end;  /* Align items to the left */
+  justify-content: flex-end;  
   width: 90%;
 }
 
