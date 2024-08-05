@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 import '../Common.css';
 
 const UserRegistration = ({ fetchUser }) => {
@@ -19,7 +19,7 @@ const UserRegistration = ({ fetchUser }) => {
       return;
     }
     try {
-      // await axios.post('http://localhost:5000/api/user', { name, phoneNo, password, age, address, role, specialty });
+      await axios.post('http://localhost:5000/api/user', { name, phoneNo, password, age, address, role, specialty });
       setName('');
       setPhoneNo('');
       setPassword('');

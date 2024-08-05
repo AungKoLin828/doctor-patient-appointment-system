@@ -13,11 +13,4 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.content {
-  text-align: center;
-  color: rgb(127, 110, 134);
-  width: 95%;
-  justify-content: flex-end;
-  align-items: center;
-}
 

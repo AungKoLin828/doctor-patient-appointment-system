@@ -13,8 +13,8 @@ const Home = () => {
     return (
       <div className="home-container">
         <h1 className="welcome-text">Welcome to Our Doctors & Patients Appointments Services</h1>
-        <p>Our platform is designed to simplify the process of booking appointments and facilitate meaningful discussions between doctors and patients.</p>
-        <p>Schedule your appointments with ease and convenience</p>
+        <p className='home-desc'>Our platform is designed to simplify the process of booking appointments and facilitate meaningful discussions between doctors and patients.</p>
+        <p className='home-desc'>Schedule your appointments with ease and convenience</p>
         <button className="header-button" onClick={handleBookNow}>Book Now</button>
         <div className="slider-container">
           <ImageSlider />

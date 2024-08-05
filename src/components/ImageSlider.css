@@ -1,16 +1,13 @@
 .slider-container {
   margin: 0 auto;
-  height: 500px; 
-  padding: 20px;
-  max-width: 800px;
+  height: 450px;
+  padding: 10px;
+  width: 80%;
 }
-  
-  .slick-slide img {
-    display: block;
-    margin: 0 auto;
-    max-width: 1000px;
-    height: 250px;  
-  }
-  .slick-dots {
-    bottom: -30px; 
-  }
+.slider-image {
+  margin: 0 auto;
+  height: 270px;  
+}
+.slick-dots {
+  bottom: -30px; 
+}

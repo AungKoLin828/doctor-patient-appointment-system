@@ -23,22 +23,21 @@ const ImageSlider = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
-    centerMode: true,
-    centerPadding: '0',
+    autoplaySpeed: 3000,
   };
-  
+
   return (
     <div className="slider-container">
       <Slider {...settings}>
         {images.map((image, index) => (
           <div key={index}>
-            <img src={image} alt={`Slide ${index + 1}`} className="slider-image" />
+            <img src={image} alt={`Slider ${index + 1}`} className="slider-image" />
           </div>
         ))}
       </Slider>
     </div>
   );
 };
+
 
 export default ImageSlider;
