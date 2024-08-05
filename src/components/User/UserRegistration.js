@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
+import '../Common.css';
 
 const UserRegistration = ({ fetchUser }) => {
   const [name, setName] = useState('');
@@ -13,8 +14,12 @@ const UserRegistration = ({ fetchUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
     try {
-      await axios.post('http://localhost:5000/api/user', {name, phoneNo, password,age, address, role, specialty});
+      // await axios.post('http://localhost:5000/api/user', { name, phoneNo, password, age, address, role, specialty });
       setName('');
       setPhoneNo('');
       setPassword('');
@@ -31,7 +36,7 @@ const UserRegistration = ({ fetchUser }) => {
 
   return (
     <form onSubmit={handleSubmit} className="user-form">
-      <div>
+      <div className="form-group">
         <label>Name:</label>
         <input
           type="text"
@@ -40,7 +45,7 @@ const UserRegistration = ({ fetchUser }) => {
           required
         />
       </div>
-      <div>
+      <div className="form-group">
         <label>Phone:</label>
         <input
           type="text"
@@ -49,62 +54,70 @@ const UserRegistration = ({ fetchUser }) => {
           required
         />
       </div>
-      <div>
+      <div className="form-group">
         <label>Password:</label>
         <input
-          type="text"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <div>
+      <div className="form-group">
         <label>Confirm Password:</label>
         <input
-          type="text"
+          type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
       </div>
-      <div>
+      <div className="form-group">
         <label>Age:</label>
         <input
-          type="text"
+          type="number"
           value={age}
           onChange={(e) => setAge(e.target.value)}
           required
         />
       </div>
-      <div>
+      <div className="form-group">
         <label>Address:</label>
         <textarea
-          type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           required
         ></textarea>
       </div>
-      <div>
-        <label>Role:</label>
-        <input
-          type="text"
+      <div className="form-group">
+        <label>Patient/Doctor:</label>
+        <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
           required
-        />
-      </div>
-      <div>
-        <label>Specialty:</label>
-        <select id="specialty" class="form-select" onChange={(e) => setSpecialty(e.target.value)}>
+        >
           <option value="">Select One</option>
-          <option value="Neurology Specialist">Neurology Specialist</option>
-          <option value="Eye Specialist">Eye Specialist</option>
-          <option value="Heart Specialist">Heart Specialist</option>
-          <option value="Osteoporosis Specialist">Osteoporosis Specialist</option>
-          <option value="ENT Specialist">ENT Specialist</option>
+          <option value="doctor">Doctor</option>
+          <option value="patient">Patient</option>
         </select>
       </div>
+      { role === 'doctor' &&(
+        <div className="form-group">
+          <label>Specialty:</label>
+          <select
+            value={specialty}
+            onChange={(e) => setSpecialty(e.target.value)}
+            required
+          >
+            <option value="">Select One</option>
+            <option value="Neurology Specialist">Neurology Specialist</option>
+            <option value="Eye Specialist">Eye Specialist</option>
+            <option value="Heart Specialist">Heart Specialist</option>
+            <option value="Osteoporosis Specialist">Osteoporosis Specialist</option>
+            <option value="ENT Specialist">ENT Specialist</option>
+          </select>
+        </div>
+      )}
       <button type="submit">Add User</button>
     </form>
   );

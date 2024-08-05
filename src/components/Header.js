@@ -26,7 +26,7 @@ const Header = () => {
       
       <h1><img className='logo-img' src={logoImg} alt="Logo" /> &nbsp; Doctors & Patients Appointments System</h1>
       <nav>
-        <ul>
+        <ul>           
           <li><Link to="/">Home</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/about">About</Link></li>

@@ -16,7 +16,7 @@ body {
 .content {
   text-align: center;
   color: rgb(127, 110, 134);
-  width: 100%;
+  width: 95%;
   justify-content: flex-end;
   align-items: center;
 }

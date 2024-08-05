@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Common.css';
 
 const Login = () => {
@@ -15,7 +16,6 @@ const Login = () => {
       return;
     }
 
-    // TODO: Implement authentication logic here
     // For now, we'll just log the inputs
     console.log('Username:', username);
     console.log('Password:', password);
@@ -50,6 +50,7 @@ const Login = () => {
           />
         </div>
         <button type="submit">Login</button>
+        <p>Don't have an account? <Link to="/register">Register here</Link></p>
       </form>
     </div>
   );
