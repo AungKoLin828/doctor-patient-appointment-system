@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../Common.css';
 import axios from 'axios';
 
 const AppointmentForm = ({ fetchAppointments }) => {
@@ -45,8 +46,8 @@ const AppointmentForm = ({ fetchAppointments }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="appointment-form">
-      <div>
+    <form onSubmit={handleSubmit} className="user-form">
+      <div className="form-group">
         <label>Doctor:</label>
         <select value={doctorId} onChange={(e) => setDoctorId(e.target.value)} required>
           <option value="">Select Doctor</option>
@@ -57,7 +58,7 @@ const AppointmentForm = ({ fetchAppointments }) => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="form-group">
         <label>Patient:</label>
         <select value={patientId} onChange={(e) => setPatientId(e.target.value)} required>
           <option value="">Select Patient</option>
@@ -68,7 +69,7 @@ const AppointmentForm = ({ fetchAppointments }) => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="form-group">
         <label>Date:</label>
         <input
           type="date"
@@ -77,7 +78,7 @@ const AppointmentForm = ({ fetchAppointments }) => {
           required
         />
       </div>
-      <div>
+      <div className="form-group">
         <label>Time:</label>
         <input
           type="time"
