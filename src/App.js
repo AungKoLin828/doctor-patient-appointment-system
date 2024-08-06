@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
@@ -12,6 +11,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import ErrorPage from './components/ErrorPage ';
 
 function App() {
+
   return (
     <div className="App">
       <Router>

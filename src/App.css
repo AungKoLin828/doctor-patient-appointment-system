@@ -3,14 +3,7 @@
   background-size: cover;
   background-position: center;
   position: relative;
-}
-
-body {
-  background: linear-gradient(to bottom, #f0f8ff, #ffffff); 
-  height: 100vh;
-  margin: 0;
-  color: #333;
-  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #f0f8ff, #ffffff);
 }
 
 

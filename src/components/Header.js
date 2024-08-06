@@ -23,7 +23,6 @@ const Header = () => {
 
   return (
     <header className={isScrolled ? 'header scrolled' : 'header'}>
-      
       <h1><img className='logo-img' src={logoImg} alt="Logo" /> &nbsp; Doctors & Patients Appointments System</h1>
       <nav>
         <ul>           
@@ -31,7 +30,6 @@ const Header = () => {
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/appointment">Appointment</Link></li>
-
         </ul>
       </nav>
     </header>
