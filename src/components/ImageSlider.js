@@ -1,11 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-// import image1 from '../assets/images/bg-image.jpg'; 
-// import image2 from '../assets/images/nursing-care4.jpg'; 
-// import image3 from '../assets/images/01.jpg'; 
-// import image4 from '../assets/images/img02.jpg'; 
+import 'slick-carousel/slick/slick-theme.css'; 
 import './ImageSlider.css'
 
 const images = [

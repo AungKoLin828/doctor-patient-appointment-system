@@ -1,9 +1,9 @@
 .home-container {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    min-height: 50vh; /* Full height of the viewport */
+    justify-content: center; 
+    align-items: center; 
+    min-height: 50vh; 
     text-align: center;
   }
     
