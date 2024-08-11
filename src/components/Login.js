@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Common.css';
+import axios from 'axios'; // Make sure you have axios installed
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     // Basic validation
@@ -16,9 +17,19 @@ const Login = () => {
       return;
     }
 
-    // For now, we'll just log the inputs
-    console.log('Username:', username);
-    console.log('Password:', password);
+    try {
+      const response = await axios.post('http://localhost:5000/api/login', { username, password });
+      
+      if (response.status === '200' ){
+        console.log(response.data.message);
+      // Handle successful login, e.g., redirect to another page or save token
+      }else{
+        setError('Invalid username or password');
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      setError('Invalid username or password');
+    }
 
     // Reset the form
     setUsername('');
@@ -30,7 +41,7 @@ const Login = () => {
     <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-      {error && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
         <div className="form-group">
           <label htmlFor="username">Phone:</label>
           <input

@@ -68,6 +68,7 @@
   .form-group label {
     display: block;
     margin-bottom: 5px;
+    color: #666;
   }
   
   .form-group input {
@@ -163,6 +164,34 @@
   color: #007bff;
   text-decoration: none;
   font-size: 1.2em;
+}
+
+
+.data-display-container {
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 5px 0;
 }
 
   

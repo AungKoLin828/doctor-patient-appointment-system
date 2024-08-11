@@ -8,6 +8,7 @@ import Login from './components/Login';
 import UserRegistration from './components/User/UserRegistration';
 import AppointmentForm from './components/Appointments/AppointmentForm';
 import ErrorBoundary from './components/ErrorBoundary';
+import AppointmentsLists from './components/Appointments/AppointmentsLists';
 import ErrorPage from './components/ErrorPage ';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/register" element={<UserRegistration />} /> 
             <Route path="/appointment" element={<AppointmentForm/>}/>
+            <Route path="/userlists" element={<AppointmentsLists/>}/>
             <Route path="/error" element={<ErrorPage />} /> 
           </Routes>
         </ErrorBoundary>

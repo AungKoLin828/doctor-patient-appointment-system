@@ -30,6 +30,7 @@ const Header = () => {
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/appointment">Appointment</Link></li>
+          <li><Link to="/userlists">User List</Link></li>
         </ul>
       </nav>
     </header>
