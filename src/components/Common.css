@@ -194,5 +194,47 @@ li {
   margin: 5px 0;
 }
 
+/* Container for the doctor profile */
+.doctor-profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+/* Profile details styling */
+.doctor-profile {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Doctor's name styling */
+.doctor-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Specialty styling */
+.doctor-specialty {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Loading and error messages */
+.loading, .error {
+  font-size: 18px;
+  color: #888;
+  text-align: center;
+}
+
   
   

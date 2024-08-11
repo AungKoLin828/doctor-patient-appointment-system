@@ -20,21 +20,26 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/login', { username, password });
       
-      if (response.status === '200' ){
+      if (response.status === 200) {
         console.log(response.data.message);
-      // Handle successful login, e.g., redirect to another page or save token
-      }else{
-        setError('Invalid username or password');
-        console.log(response.data.message);
+        const { id, role } = response.data;
+        if (role === 'doctor') {
+          window.location.href = `/doctor/${id}`;
+        } else if (role === 'patient') {
+          window.location.href = `/patient/${id}`;
+        }
       }
     } catch (error) {
-      setError('Invalid username or password');
+      if (error.response && error.response.status === 401) {
+        setError(error.response.data.message || 'Invalid username or password');
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     }
 
     // Reset the form
     setUsername('');
     setPassword('');
-    setError('');
   };
 
   return (

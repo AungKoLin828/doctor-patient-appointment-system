@@ -8,10 +8,12 @@ const port = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Dummy user data (for demonstration purposes)
+// Dummy user data with roles and IDs
 const users = [
-  { username: 'user1', password: 'password1' },
-  { username: 'user2', password: 'password2' }
+  { username: 'doctor1', password: 'password1', role: 'doctor', id: 1 },
+  { username: 'doctor2', password: 'password2', role: 'doctor', id: 2 },
+  { username: 'patient1', password: 'password1', role: 'patient', id: 1 },
+  { username: 'patient2', password: 'password2', role: 'patient', id: 2 }
 ];
 
 // Login route
@@ -21,13 +23,13 @@ app.post('/api/login', (req, res) => {
   const user = users.find(user => user.username === username && user.password === password);
 
   if (user) {
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({ message: 'Login successful', role: user.role, id: user.id });
   } else {
     res.status(401).json({ message: 'Invalid username or password' });
   }
 });
 
-// Dummy data
+// Dummy data for profiles
 const doctors = [
   { id: 1, name: 'Dr. John Doe', specialty: 'Cardiology' },
   { id: 2, name: 'Dr. Jane Smith', specialty: 'Neurology' },
@@ -43,7 +45,25 @@ const appointments = [
   { id: 2, doctorId: 2, patientId: 2, date: '2024-08-02', time: '14:00' },
 ];
 
-// Routes to get data
+// Routes
+app.get('/api/profile/patient/:id', (req, res) => {
+  const patient = patients.find(p => p.id === parseInt(req.params.id));
+  if (patient) {
+    res.json(patient);
+  } else {
+    res.status(404).send('Patient not found');
+  }
+});
+
+app.get('/api/profile/doctor/:id', (req, res) => {
+  const doctor = doctors.find(d => d.id === parseInt(req.params.id));
+  if (doctor) {
+    res.json(doctor);
+  } else {
+    res.status(404).send('Doctor not found');
+  }
+});
+
 app.get('/api/doctors', (req, res) => {
   res.json(doctors);
 });
