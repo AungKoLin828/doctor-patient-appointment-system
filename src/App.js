@@ -10,29 +10,26 @@ import AppointmentForm from './components/Appointments/AppointmentForm';
 import AppointmentsLists from './components/Appointments/AppointmentsLists';
 import PatientProfile from './components/User/PatientProfile';
 import DoctorProfile from './components/User/DoctorProfile';
-import ErrorPage from './components/ErrorPage ';
 import { AuthProvider } from './components/AuthContext';
 
 function App() {
-
   return (
     <div className="App">
       <AuthProvider>
-      <Router>
-      <Header />
+        <Router>
+          <Header />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path='/login' element={<Login/>}/>
+            <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
-            <Route path="/register" element={<UserRegistration />} /> 
-            <Route path="/appointment" element={<AppointmentForm/>}/>
-            <Route path="/userlists" element={<AppointmentsLists/>}/>
+            <Route path="/register" element={<UserRegistration />} />
+            <Route path="/appointment" element={<AppointmentForm />} />
+            <Route path="/userlists" element={<AppointmentsLists />} />
             <Route path="/patient/:id" element={<PatientProfile />} />
             <Route path="/doctor/:id" element={<DoctorProfile />} />
-            <Route path="/error" element={<ErrorPage />} /> 
           </Routes>
-        <Footer />
-      </Router>
+          <Footer />
+        </Router>
       </AuthProvider>
     </div>
   );

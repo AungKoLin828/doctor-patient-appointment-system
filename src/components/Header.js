@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import logoImg from '../logo.png';
-import { useAuth } from './AuthContext';  // Assume this provides the login state
+import { useAuth } from './AuthContext';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, logout } = useAuth();  // AuthContext provides authentication state
+  const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();  // Clear authentication state
-    navigate('/login');  // Redirect to login page
+    logout();
+    navigate('/login');
   };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -30,13 +31,22 @@ const Header = () => {
         <nav>
           <ul className="nav-links">
             <li><Link to="/">Home</Link></li>
-
             {isAuthenticated ? (
               <>
                 <li><Link to="/profile">Profile</Link></li>
                 <li><Link to="/appointment">Appointment</Link></li>
                 <li><Link to="/userlists">User List</Link></li>
-                <li><button onClick={handleLogout}>Logout</button></li>
+                <li>
+                  <Link
+                    to="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                    }}
+                  >
+                    Logout
+                  </Link>
+                </li>
               </>
             ) : (
               <>
