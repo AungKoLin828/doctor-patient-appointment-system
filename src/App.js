@@ -7,19 +7,19 @@ import About from './components/About/About';
 import Login from './components/Login';
 import UserRegistration from './components/User/UserRegistration';
 import AppointmentForm from './components/Appointments/AppointmentForm';
-import ErrorBoundary from './components/ErrorBoundary';
 import AppointmentsLists from './components/Appointments/AppointmentsLists';
 import PatientProfile from './components/User/PatientProfile';
 import DoctorProfile from './components/User/DoctorProfile';
 import ErrorPage from './components/ErrorPage ';
+import { AuthProvider } from './components/AuthContext';
 
 function App() {
 
   return (
     <div className="App">
+      <AuthProvider>
       <Router>
       <Header />
-      <ErrorBoundary>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path='/login' element={<Login/>}/>
@@ -31,9 +31,9 @@ function App() {
             <Route path="/doctor/:id" element={<DoctorProfile />} />
             <Route path="/error" element={<ErrorPage />} /> 
           </Routes>
-        </ErrorBoundary>
         <Footer />
       </Router>
+      </AuthProvider>
     </div>
   );
 }
