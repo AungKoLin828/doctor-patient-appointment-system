@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUserRole(data.role);
       setUserId(data.id);
-
+      console.log(data);
       // Persist login state in localStorage
       localStorage.setItem('isAuthenticated', true);
       localStorage.setItem('userRole', data.role);

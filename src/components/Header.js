@@ -33,7 +33,7 @@ const Header = () => {
             <li><Link to="/">Home</Link></li>
             {isAuthenticated ? (
               <>
-                <li><Link to="/profile">Profile</Link></li>
+                {/* <li><Link to="/profile">Profile</Link></li> */}
                 <li><Link to="/appointment">Appointment</Link></li>
                 <li><Link to="/userlists">User List</Link></li>
                 <li>

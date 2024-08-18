@@ -194,47 +194,69 @@ li {
   margin: 5px 0;
 }
 
-/* Container for the doctor profile */
-.doctor-profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  background-color: #f4f4f4;
-  padding: 20px;
-}
+/* DoctorProfile.css */
 
-/* Profile details styling */
 .doctor-profile {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  max-width: 600px;
-  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.profile-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.profile-header {
+  background: #4CAF50;
+  color: white;
+  padding: 20px;
   text-align: center;
 }
 
-/* Doctor's name styling */
-.doctor-name {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
+.profile-header h2 {
+  margin: 0;
 }
 
-/* Specialty styling */
-.doctor-specialty {
-  font-size: 18px;
-  color: #666;
+.specialty {
+  font-size: 1.2em;
+  font-weight: 300;
 }
 
-/* Loading and error messages */
-.loading, .error {
-  font-size: 18px;
-  color: #888;
+.profile-body {
+  padding: 20px;
+}
+
+.profile-info h3 {
+  border-bottom: 2px solid #4CAF50;
+  padding-bottom: 10px;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.profile-actions button {
+  background: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-actions button:hover {
+  background: #45a049;
+}
+
+.error {
+  color: red;
   text-align: center;
+  padding: 20px;
 }
-
   
   

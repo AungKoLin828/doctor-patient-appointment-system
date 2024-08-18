@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import '../Common.css'; // Import the CSS file
+import axios from 'axios';
+import '../Common.css'; 
 
 const DoctorProfile = () => {
   const { id } = useParams();
@@ -9,35 +9,41 @@ const DoctorProfile = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchDoctorProfile = async () => {
+    const fetchDoctor = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/profile/doctor/${id}`);
         setDoctor(response.data);
       } catch (error) {
-        console.error('Error fetching doctor profile:', error);
-        setError('Error fetching doctor profile');
+        setError('Error fetching doctor details.');
       }
     };
 
-    if (id) {
-      fetchDoctorProfile();
-    } else {
-      setError('Invalid doctor ID');
-    }
+    fetchDoctor();
   }, [id]);
 
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <div className="error">{error}</div>;
+  if (!doctor) return <div>Loading...</div>;
 
   return (
-    <div className="doctor-profile-container">
-      {doctor ? (
-        <div className="doctor-profile">
-          <h2 className="doctor-name">{doctor.name}</h2>
-          <p className="doctor-specialty">Specialty: {doctor.specialty}</p>
+    <div className="doctor-profile">
+      <h1>Doctor Profile</h1>
+      <div className="profile-card">
+        <div className="profile-header">
+          <h2>{doctor.name}</h2>
+          <p className="specialty">{doctor.specialty}</p>
         </div>
-      ) : (
-        <p className="loading">Loading...</p>
-      )}
+        <div className="profile-body">
+          <div className="profile-info">
+            <h3>Information</h3>
+            <p><strong>ID:</strong> {doctor.id}</p>
+            <p><strong>Specialty:</strong> {doctor.specialty}</p>
+          </div>
+          <div className="profile-actions">
+            <button>Edit Profile</button>
+            <button>View Appointments</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

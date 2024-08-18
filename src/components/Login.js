@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Common.css';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthContext'; // Use AuthContext to get the login function
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  
-  // Get login function and other state from AuthContext
-  const { login, userRole, userId } = useAuth(); // Extract userRole and userId
+
+  // Get login function from AuthContext
+  const { login} = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -21,14 +21,16 @@ const Login = () => {
     }
 
     try {
-      await login(username, password);
+      await login(username, password); // Call login function
+      // Redirect based on user role after successful login
+      const userRole = localStorage.getItem(`userRole`);
+      const userId = localStorage.getItem(`userId`);
 
-      // Redirect based on user role
       if (userRole === 'doctor') {
         navigate(`/doctor/${userId}`);
       } else if (userRole === 'patient') {
         navigate(`/patient/${userId}`);
-      }
+      } 
     } catch (error) {
       const message = error.response?.data?.message || 'An error occurred. Please try again.';
       setError(message);
