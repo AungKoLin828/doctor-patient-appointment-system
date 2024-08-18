@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../Common.css'; 
+import profileImg from '../images/profile.png'; 
 
 const DoctorProfile = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const DoctorProfile = () => {
       <h1>Doctor Profile</h1>
       <div className="profile-card">
         <div className="profile-header">
+          <img src={profileImg} alt="Doctor Profile" className="profile-img" />
           <h2>{doctor.name}</h2>
           <p className="specialty">{doctor.specialty}</p>
         </div>

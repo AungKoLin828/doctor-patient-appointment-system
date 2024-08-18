@@ -195,7 +195,13 @@ li {
 }
 
 /* DoctorProfile.css */
-
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
 .doctor-profile {
   padding: 20px;
   max-width: 800px;
