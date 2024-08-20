@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../Common.css'; 
-import profileImg from '../images/profile.png'; 
+import profileImg from '../../assets/images/download.jpg';
 
 const DoctorProfile = () => {
   const { id } = useParams();
@@ -32,13 +32,15 @@ const DoctorProfile = () => {
         <div className="profile-header">
           <img src={profileImg} alt="Doctor Profile" className="profile-img" />
           <h2>{doctor.name}</h2>
-          <p className="specialty">{doctor.specialty}</p>
+          <p className="specialty">{doctor.education}</p>
         </div>
         <div className="profile-body">
           <div className="profile-info">
             <h3>Information</h3>
             <p><strong>ID:</strong> {doctor.id}</p>
+            <p><strong>Hospital:</strong> {doctor.hospital}</p>
             <p><strong>Specialty:</strong> {doctor.specialty}</p>
+            <p><strong>Address:</strong> {doctor.address}</p>
           </div>
           <div className="profile-actions">
             <button>Edit Profile</button>
