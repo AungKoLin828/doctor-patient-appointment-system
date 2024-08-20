@@ -29,7 +29,7 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-// Dummy data for profiles
+// Dummy data for profiles  
 const doctors = [
   { id: 1, name: 'Dr. John Doe',education:'M.B.B.S(YGN)', specialty: 'Cardiology',address:'Insein',hospital:'Yangon' },
   { id: 2, name: 'Dr. Jane Smith',education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
