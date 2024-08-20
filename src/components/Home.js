@@ -2,12 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ImageSlider from './ImageSlider.js';
 import './Home.css';
+import { useAuth } from './AuthContext';
 
 const Home = () => {
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
 
     const handleBookNow = () => {
-        navigate('/login');
+        if(isAuthenticated){
+          navigate('/appointment');
+        }else{
+          navigate('/login');
+        }
     };
 
     return (
