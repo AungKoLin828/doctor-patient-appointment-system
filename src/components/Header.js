@@ -6,7 +6,7 @@ import { useAuth } from './AuthContext';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, userRole, userId, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -33,7 +33,12 @@ const Header = () => {
             <li><Link to="/">Home</Link></li>
             {isAuthenticated ? (
               <>
-                <li><Link to="/profile">Profile</Link></li>
+                {userRole === 'doctor' && (
+                  <li><Link to={`/doctor/${userId}`}>Profile</Link></li>
+                )}
+                {userRole === 'patient' && (
+                  <li><Link to={`/patient/${userId}`}>Profile</Link></li>
+                )}
                 <li><Link to="/appointment">Appointment</Link></li>
                 <li><Link to="/userlists">User List</Link></li>
                 <li>
