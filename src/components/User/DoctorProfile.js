@@ -12,6 +12,7 @@ const DoctorProfile = () => {
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
+        console.log("ID" + id);
         const response = await axios.get(`http://localhost:5000/api/profile/doctor/${id}`);
         setDoctor(response.data);
       } catch (error) {
