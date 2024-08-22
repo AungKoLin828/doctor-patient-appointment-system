@@ -36,8 +36,8 @@ const doctors = [
 ];
 
 const patients = [
-  { id: 'P0001', name: 'Patient A', age: 30 },
-  { id: 'P0002', name: 'Patient B', age: 25 },
+  { id: 'P0001', name: 'Patient A', age: 30 ,address:'Insein'},
+  { id: 'P0002', name: 'Patient B', age: 25 ,address:'Thaketa'},
 ];
 
 const appointments = [
