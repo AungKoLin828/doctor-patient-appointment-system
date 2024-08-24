@@ -6,11 +6,14 @@ import { useAuth } from './AuthContext';
 
 const Home = () => {
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated ,userRole} = useAuth();
 
     const handleBookNow = () => {
         if(isAuthenticated){
-          navigate('/appointment');
+          if(userRole === 'patient'){
+            navigate('/doctorlist');
+          }
+          return;
         }else{
           navigate('/login');
         }
@@ -21,7 +24,9 @@ const Home = () => {
         <h1 className="welcome-text">Welcome to Our Doctors & Patients Appointments Services</h1>
         <p className='home-desc'>Our platform is designed to simplify the process of booking appointments and facilitate meaningful discussions between doctors and patients.</p>
         <p className='home-desc'>Schedule your appointments with ease and convenience</p>
-        <button className="header-button" onClick={handleBookNow}>Book Now</button>
+        {isAuthenticated && userRole === 'patient' && (
+          <button className="header-button" onClick={handleBookNow}>Book Now</button>
+        )}
         <div className="slider-container">
           <ImageSlider />
         </div>

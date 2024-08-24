@@ -13,7 +13,8 @@ const users = [
   { username: 'doctor1', password: 'password1', role: 'doctor', id: 'D0001' },
   { username: 'doctor2', password: 'password2', role: 'doctor', id: 'D0002' },
   { username: 'patient1', password: 'password1', role: 'patient', id: 'P0001' },
-  { username: 'patient2', password: 'password2', role: 'patient', id: 'P0002' }
+  { username: 'patient2', password: 'password2', role: 'patient', id: 'P0002' },
+  { username: 'admin', password: 'admin123', role: 'admin', id: 'A0001' }
 ];
 
 // Login route
@@ -56,6 +57,10 @@ const patients = [
   { id: 'P0009', name: 'Patient I',phone:'09450821620', age: 25 ,gender: 'Male', address:'Thaketa'},
   { id: 'P0010', name: 'Patient J',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
 ];
+
+const admin =[
+  {id:'A0001',name:'Administrator'}
+]
 
 const appointments = [
   { id: 1, doctorId: 'D0001', patientId: 'P0001', date: '2024-08-01', time: '10:00' },

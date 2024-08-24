@@ -37,12 +37,19 @@ const Header = () => {
                   <li><Link to={`/doctor/${userId}`}>Profile</Link></li>
                 )}
                 {userRole === 'patient' && (
+                  <>
                   <li><Link to={`/patient/${userId}`}>Profile</Link></li>
+                  <li><Link to={"/doctorlist"}>All Doctors</Link></li>
+                  </>
                 )}
-                <li><Link to="/appointment">Appointment</Link></li>
-                <li><Link to="/userlists">Appointment List</Link></li>
-                <li><Link to="/doctorlist">All Doctors</Link></li>
-                <li><Link to="/patientlist">All Patients</Link></li>
+                {userRole === 'admin' && (
+                  <>
+                  <li><Link to={`/patient/${userId}`}>Profile</Link></li>
+                  <li><Link to={"/doctorlist"}>All Doctors</Link></li>
+                  <li><Link to="/userlists">Appointment List</Link></li>
+                  <li><Link to="/patientlist">All Patients</Link></li>
+                  </>
+                )}
                 <li>
                   <Link
                     to="#"

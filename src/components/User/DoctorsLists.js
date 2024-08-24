@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Correct import for navigation
 import '../Common.css';
+import { useAuth } from '../AuthContext';
 
 const DoctorList = () => {
   const [doctors, setDoctors] = useState([]);
+  const { isAuthenticated ,userRole} = useAuth();
   const [error, setError] = useState('');
   const navigate = useNavigate(); // useNavigate hook for navigation
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,13 +76,15 @@ const DoctorList = () => {
                 >
                   View Detail
                 </button>
-                <button
-                  type="button"
-                  className="remove-btn"
-                  onClick={() => deleteDoctor(doctor.id)}
-                >
-                  Delete
-                </button>
+                {isAuthenticated && userRole === 'admin' && (
+                  <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={() => deleteDoctor(doctor.id)}
+                    >
+                    Delete
+                  </button>
+                )}
               </td>
             </tr>
           ))}
