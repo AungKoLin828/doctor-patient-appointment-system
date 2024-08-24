@@ -31,13 +31,30 @@ app.post('/api/login', (req, res) => {
 
 // Dummy data for profiles  
 const doctors = [
-  { id: 'D0001', name: 'Dr. John Doe', education:'M.B.B.S(YGN)', specialty: 'Cardiology',address:'Insein',hospital:'Yangon' },
-  { id: 'D0002', name: 'Dr. Jane Smith', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0001', name: 'Dr. John Doe',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Cardiology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0002', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0003', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0004', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0005', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0006', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0007', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0008', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0009', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0010', name: 'Dr. Jane Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
+  { id: 'D0011', name: 'Dr. Aung Ko Smith',phone:'09450821620', education:'M.B.B.S(YGN)', specialty: 'Neurology',address:'Insein',hospital:'Yangon' },
 ];
 
 const patients = [
-  { id: 'P0001', name: 'Patient A', age: 30 ,address:'Insein'},
-  { id: 'P0002', name: 'Patient B', age: 25 ,address:'Thaketa'},
+  { id: 'P0001', name: 'Patient A',phone:'09450821620', age: 30 ,gender: 'Male', address:'Insein'},
+  { id: 'P0002', name: 'Patient B',phone:'09450821620', age: 25 ,gender: 'Male', address:'Thaketa'},
+  { id: 'P0003', name: 'Patient C',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
+  { id: 'P0004', name: 'Patient D',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
+  { id: 'P0005', name: 'Patient E',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
+  { id: 'P0006', name: 'Patient F',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
+  { id: 'P0007', name: 'Patient G',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
+  { id: 'P0008', name: 'Patient H',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
+  { id: 'P0009', name: 'Patient I',phone:'09450821620', age: 25 ,gender: 'Male', address:'Thaketa'},
+  { id: 'P0010', name: 'Patient J',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
 ];
 
 const appointments = [
@@ -74,6 +91,19 @@ app.get('/api/patients', (req, res) => {
 
 app.get('/api/appointments', (req, res) => {
   res.json(appointments);
+});
+
+// DELETE route to delete a doctor by ID
+app.delete('/doctors/:id', async (req, res) => {
+  try {
+    const doctor = await doctors.findByIdAndDelete(req.params.id);
+    if (!doctor) {
+      return res.status(404).send('Doctor not found');
+    }
+    res.status(200).send('Doctor deleted successfully');
+  } catch (error) {
+    res.status(500).send('Server Error');
+  }
 });
 
 // Start the server

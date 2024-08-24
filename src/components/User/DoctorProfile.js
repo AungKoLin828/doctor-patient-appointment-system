@@ -39,6 +39,7 @@ const DoctorProfile = () => {
           <div className="profile-info">
             <h3>Information</h3>
             <p><strong>ID:</strong> {doctor.id}</p>
+            <p><strong>Phone:</strong> {doctor.phone}</p>
             <p><strong>Hospital:</strong> {doctor.hospital}</p>
             <p><strong>Specialty:</strong> {doctor.specialty}</p>
             <p><strong>Address:</strong> {doctor.address}</p>

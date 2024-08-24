@@ -11,6 +11,8 @@ import AppointmentForm from './components/Appointments/AppointmentForm';
 import AppointmentsLists from './components/Appointments/AppointmentsLists';
 import PatientProfile from './components/User/PatientProfile';
 import DoctorProfile from './components/User/DoctorProfile';
+import DoctorList from './components/User/DoctorsLists';
+import PatientsLists from './components/User/PatientsLists';
 import { AuthProvider } from './components/AuthContext';
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
             <Route path="/register" element={<UserRegistration />} />
             <Route path="/appointment" element={<AppointmentForm />} />
             <Route path="/userlists" element={<AppointmentsLists />} />
+            <Route path="/doctorlist" element={<DoctorList />} />
+            <Route path="/patientlist" element={<PatientsLists />} />
             <Route path="/patient/:id" element={<PatientProfile />} />
             <Route path="/doctor/:id" element={<DoctorProfile />} />
           </Routes>
