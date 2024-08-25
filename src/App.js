@@ -14,6 +14,7 @@ import DoctorProfile from './components/User/DoctorProfile';
 import DoctorList from './components/User/DoctorsLists';
 import PatientsLists from './components/User/PatientsLists';
 import { AuthProvider } from './components/AuthContext';
+import AdminDashboard from './components/User/AdminDashboard ';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/patientlist" element={<PatientsLists />} />
             <Route path="/patient/:id" element={<PatientProfile />} />
             <Route path="/doctor/:id" element={<DoctorProfile />} />
+            <Route path="/admin/:id" element={<AdminDashboard />} />
           </Routes>
           <Footer />
         </Router>

@@ -30,7 +30,9 @@ const Login = () => {
         navigate(`/doctor/${userId}`);
       } else if (userRole === 'patient') {
         navigate(`/patient/${userId}`);
-      } 
+      } else if (userRole === 'admin'){
+        navigate(`/admin/${userId}`);
+      }
     } catch (error) {
       const message = error.response?.data?.message || 'An error occurred. Please try again.';
       setError(message);

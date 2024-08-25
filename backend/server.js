@@ -111,6 +111,17 @@ app.delete('/doctors/:id', async (req, res) => {
   }
 });
 
+app.get('/api/admin/user-usage', (req, res) => {
+  const userData = [
+    { name: 'User 1', usage: 5 },
+    { name: 'User 2', usage: 8 },
+    { name: 'User 3', usage: 12 },
+    // ...more user data
+  ];
+  res.json(userData);
+});
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

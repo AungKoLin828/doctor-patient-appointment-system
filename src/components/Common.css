@@ -399,3 +399,14 @@ li {
 .search-box:focus {
   border-color: #007bff;
 }
+
+.admin-dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.chart-container {
+  margin-top: 40px;
+}
