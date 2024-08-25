@@ -58,9 +58,9 @@ const patients = [
   { id: 'P0010', name: 'Patient J',phone:'09450821620', age: 25 ,gender: 'Female', address:'Thaketa'},
 ];
 
-const admin =[
-  {id:'A0001',name:'Administrator'}
-]
+const admin = [
+  { id:'A0001', name:'Administrator'},
+];
 
 const appointments = [
   { id: 1, doctorId: 'D0001', patientId: 'P0001', date: '2024-08-01', time: '10:00' },

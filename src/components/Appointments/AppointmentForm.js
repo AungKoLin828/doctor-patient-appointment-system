@@ -11,7 +11,7 @@ const AppointmentForm = ({ fetchAppointments }) => {
   const [time, setTime] = useState('');
 
   const location = useLocation();
-  const { userId, loginUserName } = useAuth(); // Retrieve logged-in user data
+  const { userId} = useAuth(); // Retrieve logged-in user data
 
   useEffect(() => {
     // Auto-bind the doctor info from location state (passed from DoctorList)
@@ -52,7 +52,7 @@ const AppointmentForm = ({ fetchAppointments }) => {
         <label>Patient:</label>
         <input
           type="text"
-          value={loginUserName || 'Loading...'} // Auto-bind the logged-in user's name
+          value={localStorage.getItem('loginUserName') || 'Loading...'} // Auto-bind the logged-in user's name
           disabled
         />
       </div>

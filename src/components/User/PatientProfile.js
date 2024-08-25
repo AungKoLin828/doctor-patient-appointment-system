@@ -14,6 +14,10 @@ const PatientProfile = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/profile/patient/${id}`);
         setPatient(response.data);
+        // Only set loginUserName if the patient data exists
+        if (response.data && response.data.name) {
+          localStorage.setItem('loginUserName', response.data.name);
+        }
       } catch (error) {
         setError('Error fetching patient profile');
       }

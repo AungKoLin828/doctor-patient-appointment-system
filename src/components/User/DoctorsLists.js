@@ -90,7 +90,8 @@ const DoctorList = () => {
           </tr>
         </thead>
         <tbody>
-          {currentDoctors.map((doctor) => (
+        {currentDoctors.length > 0 ? (
+          currentDoctors.map((doctor) => (
             <tr key={doctor.id}>
               <td>{doctor.name}</td>
               <td>{doctor.specialty}</td>
@@ -114,7 +115,12 @@ const DoctorList = () => {
                 )}
               </td>
             </tr>
-          ))}
+           ))
+          ) : (
+            <tr>
+              <td colSpan="6">No doctors found</td> 
+            </tr>
+          )}
         </tbody>
       </table>
       <Pagination
@@ -137,13 +143,17 @@ const Pagination = ({ doctorsPerPage, totalDoctors, paginate, currentPage }) => 
   return (
     <nav className="pagination-nav">
       <ul className="pagination">
-        {pageNumbers.map((number) => (
-          <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-            <button onClick={() => paginate(number)} className="page-link">
-              {number}
-            </button>
-          </li>
-        ))}
+        {pageNumbers.length > 0 ? (
+          pageNumbers.map((number) => (
+            <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+              <button onClick={() => paginate(number)} className="page-link">
+                {number}
+              </button>
+            </li>
+          ))
+        ) : (
+          <li>No pages available</li>
+        )}
       </ul>
     </nav>
   );
