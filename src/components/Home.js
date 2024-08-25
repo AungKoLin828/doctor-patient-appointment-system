@@ -27,6 +27,9 @@ const Home = () => {
         {isAuthenticated && userRole === 'patient' && (
           <button className="header-button" onClick={handleBookNow}>Book Now</button>
         )}
+        {!isAuthenticated && (
+          <button className="header-button" onClick={handleBookNow}>Book Now</button>
+        )}
         <div className="slider-container">
           <ImageSlider />
         </div>

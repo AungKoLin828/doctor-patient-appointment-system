@@ -33,8 +33,8 @@ const DoctorProfile = () => {
     navigate(-1); // Navigates to the previous page in the history stack
   };
 
-  const handleMakeAppointment = () => {
-    navigate("/appointment");
+  const handleMakeAppointment = (doctor) => {
+    navigate('/appointment', { state: { doctorId: doctor.id, doctorName: doctor.name } });
   };
 
   return (
@@ -57,12 +57,15 @@ const DoctorProfile = () => {
           </div>
           <div className="profile-actions">
           {isAuthenticated && userRole === 'doctor' && (
+            <>
               <button>Edit Profile</button>
+              <button>View Appointments</button>
+            </>
           )} 
           {isAuthenticated && userRole === 'patient' && (
             <>
               <button onClick={handleBack}>Back</button>
-              <button onClick={handleMakeAppointment}>Make Appointments</button>
+              <button onClick={() => handleMakeAppointment(doctor)}>Make Appointments</button>
             </>
           )}           
           </div>
