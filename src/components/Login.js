@@ -31,7 +31,7 @@ const Login = () => {
       } else if (userRole === 'patient') {
         navigate(`/patient/${userId}`);
       } else if (userRole === 'admin'){
-        navigate(`/admin/${userId}`);
+        navigate(`/dashboard`);
       }
     } catch (error) {
       const message = error.response?.data?.message || 'An error occurred. Please try again.';

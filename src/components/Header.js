@@ -44,9 +44,9 @@ const Header = () => {
                 )}
                 {userRole === 'admin' && (
                   <>
-                  <li><Link to={`/patient/${userId}`}>Profile</Link></li>
+                  <li><Link to={`/dashboard`}>Dashboard</Link></li>
                   <li><Link to={"/doctorlist"}>All Doctors</Link></li>
-                  <li><Link to="/userlists">Appointment List</Link></li>
+                  {/* <li><Link to="/userlists">Appointment List</Link></li> */}
                   <li><Link to="/patientlist">All Patients</Link></li>
                   </>
                 )}

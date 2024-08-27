@@ -1,7 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-import '../Common.css'; 
+import '../Common.css';
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const AdminDashboard = () => {
   const [userData, setUserData] = useState([]);
@@ -9,11 +27,14 @@ const AdminDashboard = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch user data from API
     const fetchUserData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/admin/user-usage');
-        setUserData(response.data);
+        if (Array.isArray(response.data)) {
+          setUserData(response.data);
+        } else {
+          setError('Unexpected data format');
+        }
         setLoading(false);
       } catch (error) {
         setError('Error fetching user data');
