@@ -21,7 +21,7 @@ const UserRegistration = ({ fetchUser }) => {
       return;
     }
     try {
-      await axios.post('http://localhost:5000/api/user', {
+      await axios.post('http://localhost:5000/api/register', {
         name,
         phoneNo,
         password,
@@ -30,7 +30,7 @@ const UserRegistration = ({ fetchUser }) => {
         role,
         specialty,
         license,
-        educationList, // Send education list
+        educationList,
       });
       // Reset form fields
       setName('');
@@ -142,7 +142,7 @@ const UserRegistration = ({ fetchUser }) => {
         ></textarea>
       </div>
       <div className="form-group">
-        <label>Patient/Doctor:</label>
+        <label>Role:</label>
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
