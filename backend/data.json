@@ -145,8 +145,12 @@
     },
     {
       "id": "D8572",
-      "name": "koko",
-      "phone": "09450821620"
+      "name": "Mr.Aung",
+      "phone": "09450821620",
+      "education": "M.B.B.S(YGN)",
+      "specialty": "Neurology",
+      "address": "Hlaing",
+      "hospital": "Yangon"
     }
   ],
   "patients": [
