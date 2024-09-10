@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../Common.css';
 
 const UserRegistration = ({ fetchUser }) => {
-  const [name, setName] = useState('');
+  const [username, setName] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -12,26 +12,51 @@ const UserRegistration = ({ fetchUser }) => {
   const [role, setRole] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [license, setLicense] = useState('');
+  const [hospital, setHospital] = useState('');
+  
   const [educationList, setEducationList] = useState([{ degree: '', institution: '', year: '' }]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
+
+    const userData = {
+      username,
+      password,
+      role,
+      id: role === 'doctor' ? `D${Math.random().toString().slice(2, 6)}` : `P${Math.random().toString().slice(2, 6)}`,
+    };
+
+    let roleData = {};
+
+    if (role === 'doctor') {
+      roleData = {
+        id: userData.id,
+        name: username,
+        phone: phoneNo,
+        specialty:specialty,
+        license: license,
+        educationList: educationList,
+        address: address,
+        hospital: hospital, 
+      };
+    } else if (role === 'patient') {
+      roleData = {
+        id: userData.id,
+        name: username,
+        phone: phoneNo,
+        age: age,
+        address: address,
+      };
+    }
+
     try {
-      await axios.post('http://localhost:5000/api/register', {
-        name,
-        phoneNo,
-        password,
-        age,
-        address,
-        role,
-        specialty,
-        license,
-        educationList,
-      });
+      await axios.post('http://localhost:5000/api/register', { ...userData, ...roleData });
+
       // Reset form fields
       setName('');
       setPhoneNo('');
@@ -92,7 +117,7 @@ const UserRegistration = ({ fetchUser }) => {
         <label>Name:</label>
         <input
           type="text"
-          value={name}
+          value={username}
           onChange={handleInputChange(setName)}
           required
         />
@@ -177,6 +202,16 @@ const UserRegistration = ({ fetchUser }) => {
               type="text"
               value={license}
               onChange={handleInputChange(setLicense)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Hospital:</label>
+            <input
+              type="text"
+              value={hospital}
+              onChange={handleInputChange(setHospital)}
               required
             />
           </div>

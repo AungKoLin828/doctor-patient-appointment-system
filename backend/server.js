@@ -3,30 +3,45 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 5000;
+const fs = require('fs');
+const path = require('path');
+const dataPath = path.join(__dirname, './data.json');
 
 // Import data
-const { users, doctors, patients, admin, appointments } = require('./data');
+// Load data from the JSON file
+let { users, doctors, patients, admin, appointments } = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 // Middleware to handle CORS
 app.use(cors());
 app.use(bodyParser.json());
 
-const findUserByUsername = (username) => users.find(user => user.username === username);
-
-// Register new user
+// Registration route
 app.post('/api/register', (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, id, name, phone, educationList } = req.body;
 
-  if (findUserByUsername(username)) {
-    return res.status(400).json({ message: 'Username already exists' });
+  // Check if username or ID already exists
+  const existingUser = users.find(user => user.username === username || user.id === id);
+  if (existingUser) {
+      return res.status(400).json({ message: 'Username or ID already exists' });
   }
 
-  // Generate a new ID based on the role
-  const newId = `${role.charAt(0).toUpperCase()}${Math.floor(Math.random() * 10000)}`;
+  // Add new user to the users array
+  users.push({ username, password, role, id });
 
-  const newUser = { username, password, role, id: newId };
-  users.push(newUser);
+  // Add new user to the corresponding role-based array
+  if (role === 'doctor') {
+      doctors.push({ id, name, phone, educationList });
+  } else if (role === 'patient') {
+      patients.push({ id, name, phone, age, address});
+  } else if (role === 'admin') {
+      admin.push({ id, name });
+  } else {
+      return res.status(400).json({ message: 'Invalid role' });
+  }
 
-  res.status(201).json({ message: 'User registered successfully', id: newId });
+  // Save updated data to the JSON file
+  fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2));
+
+  res.status(201).json({ message: 'Registration successful', user: { username, role, id } });
 });
 
 // Login route
