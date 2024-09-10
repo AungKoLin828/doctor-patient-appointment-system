@@ -67,7 +67,12 @@ const DoctorProfile = () => {
               <button onClick={handleBack}>Back</button>
               <button onClick={() => handleMakeAppointment(doctor)}>Make Appointments</button>
             </>
-          )}           
+          )} 
+          {isAuthenticated && userRole === 'admin' && (
+            <>
+              <button className='add-btn' onClick={handleBack}>Back</button>
+            </>
+          )}             
           </div>
         </div>
       </div>

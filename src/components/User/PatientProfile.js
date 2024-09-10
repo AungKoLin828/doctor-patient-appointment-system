@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/images/download.jpg';
 import '../Common.css'; 
+import { useAuth } from '../AuthContext';
 
 const PatientProfile = () => {
   const { id } = useParams();
+  const { isAuthenticated ,userRole} = useAuth();
   const [patient, setPatient] = useState(null);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPatientProfile = async () => {
@@ -30,6 +33,10 @@ const PatientProfile = () => {
   if (error) return <div className="error">{error}</div>;
   if (!patient) return <div>Loading...</div>;
 
+  const handleBack = () => {
+    navigate(-1); // Navigates to the previous page in the history stack
+  };
+
   return (
     <div className="doctor-profile">
       <h1>Patient Profile</h1>
@@ -47,8 +54,17 @@ const PatientProfile = () => {
             <p><strong>Address:</strong> {patient.address}</p>
           </div>
           <div className="profile-actions">
-            <button>Edit Profile</button>
-            <button>View Appointments</button>
+          {isAuthenticated && userRole === 'patient' && (
+            <>
+              <button>Edit Profile</button>
+              <button>View Appointments</button>
+            </>
+          )} 
+          {isAuthenticated && userRole === 'admin' && (
+            <>
+              <button className='add-btn' onClick={handleBack}>Back</button>
+            </>
+          )}             
           </div>
         </div>
       </div>
