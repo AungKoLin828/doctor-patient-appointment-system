@@ -16,12 +16,12 @@ app.use(bodyParser.json());
 
 // Registration route
 app.post('/api/register', (req, res) => {
-  const { username, password, role, id, name, phone, educationList } = req.body;
+  const { username, password, role, id, name, phone, specialty, license, hospital, educationList, age, address } = req.body;
 
   // Check if username or ID already exists
   const existingUser = users.find(user => user.username === username || user.id === id);
   if (existingUser) {
-      return res.status(400).json({ message: 'Username or ID already exists' });
+    return res.status(400).json({ message: 'Username or ID already exists' });
   }
 
   // Add new user to the users array
@@ -29,13 +29,13 @@ app.post('/api/register', (req, res) => {
 
   // Add new user to the corresponding role-based array
   if (role === 'doctor') {
-      doctors.push({ id, name, phone, educationList });
+    // Push doctor-specific details
+    doctors.push({ id, name, phone, specialty, license, hospital, educationList, address });
   } else if (role === 'patient') {
-      patients.push({ id, name, phone, age, address});
-  } else if (role === 'admin') {
-      admin.push({ id, name });
+    // Push patient-specific details
+    patients.push({ id, name, phone, age, address });
   } else {
-      return res.status(400).json({ message: 'Invalid role' });
+    return res.status(400).json({ message: 'Invalid role' });
   }
 
   // Save updated data to the JSON file

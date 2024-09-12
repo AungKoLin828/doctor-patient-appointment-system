@@ -35,12 +35,6 @@
       "password": "aungkolin",
       "role": "patient",
       "id": "P0666"
-    },
-    {
-      "username": "koko",
-      "password": "aungkolin",
-      "role": "doctor",
-      "id": "D8572"
     }
   ],
   "doctors": [
