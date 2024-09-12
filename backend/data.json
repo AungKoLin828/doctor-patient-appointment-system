@@ -35,6 +35,24 @@
       "password": "aungkolin",
       "role": "patient",
       "id": "P0666"
+    },
+    {
+      "username": "koko",
+      "password": "aungkolin",
+      "role": "doctor",
+      "id": "D8572"
+    },
+    {
+      "username": "AungAung",
+      "password": "123456789",
+      "role": "patient",
+      "id": "P4559"
+    },
+    {
+      "username": "MaungMaung",
+      "password": "123456789",
+      "role": "doctor",
+      "id": "D4994"
     }
   ],
   "doctors": [
@@ -145,6 +163,27 @@
       "specialty": "Neurology",
       "address": "Hlaing",
       "hospital": "Yangon"
+    },
+    {
+      "id": "D4994",
+      "name": "MaungMaung",
+      "phone": "09450821620",
+      "specialty": "Eye Specialist",
+      "license": "M0123548",
+      "hospital": "Thu Kha Kabar",
+      "educationList": [
+        {
+          "degree": "MBBS",
+          "institution": "Yangon-1",
+          "year": "2000"
+        },
+        {
+          "degree": "Dip.MBB",
+          "institution": "UK",
+          "year": "2005"
+        }
+      ],
+      "address": "No.11, Neik Ban Street"
     }
   ],
   "patients": [
@@ -232,6 +271,13 @@
       "id": "P0666",
       "name": "aungkolin",
       "phone": "0831177430"
+    },
+    {
+      "id": "P4559",
+      "name": "AungAung",
+      "phone": "09450821620",
+      "age": "19",
+      "address": "No.11, Neik Ban Street,BKK"
     }
   ],
   "admin": [

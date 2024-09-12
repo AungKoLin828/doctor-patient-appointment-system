@@ -44,7 +44,15 @@ const DoctorProfile = () => {
         <div className="profile-header">
           <img src={profileImg} alt="Doctor Profile" className="profile-img" />
           <h2>{doctor.name}</h2>
-          <p className="specialty">{doctor.education}</p>
+          {doctor.educationList && doctor.educationList.length > 0 ? (
+            <p className="specialty">
+              {doctor.educationList.map((education, index) => (
+                `${education.degree}${index < doctor.educationList.length - 1 ? ', ' : ''}`
+              )).join('')}
+            </p>
+          ) : (
+            <p>No education details available.</p>
+          )}
         </div>
         <div className="profile-body">
           <div className="profile-info">
@@ -53,6 +61,7 @@ const DoctorProfile = () => {
             <p><strong>Phone:</strong> {doctor.phone}</p>
             <p><strong>Hospital:</strong> {doctor.hospital}</p>
             <p><strong>Specialty:</strong> {doctor.specialty}</p>
+            <p><strong>Medical License:</strong> {doctor.license}</p>
             <p><strong>Address:</strong> {doctor.address}</p>
           </div>
           <div className="profile-actions">
