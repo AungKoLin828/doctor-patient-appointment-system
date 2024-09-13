@@ -88,18 +88,25 @@ app.get('/api/appointments', (req, res) => {
   res.json(appointments);
 });
 
-// DELETE route to delete a doctor by ID
-app.delete('/doctors/:id', async (req, res) => {
-  try {
-    const index = doctors.findIndex(d => d.id === req.params.id);
-    if (index === -1) {
-      return res.status(404).send('Doctor not found');
-    }
-    doctors.splice(index, 1);
-    res.status(200).send('Doctor deleted successfully');
-  } catch (error) {
-    res.status(500).send('Server Error');
+// Delete a doctor by ID
+app.delete('/api/doctors/:id', (req, res) => {
+  const doctorId = req.params.id;
+
+  // Find the index of the doctor with the given ID
+  const doctorIndex = doctors.findIndex(doctor => doctor.id === doctorId);
+  if (doctorIndex === -1) {
+    return res.status(404).json({ message: 'Doctor not found' });
   }
+
+  // Find the index of the doctor with the given ID
+  const userIndex = users.findIndex(user => user.id === doctorId);
+  if (userIndex === -1) {
+    return res.status(404).json({ message: 'Doctor not found' });
+  }
+
+  // Remove doctor from the list
+  doctors.splice(doctorIndex, 1);
+  res.status(200).json({ message: 'Doctor deleted successfully' });
 });
 
 app.get('/api/admin/user-usage', (req, res) => {

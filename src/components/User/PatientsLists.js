@@ -117,7 +117,7 @@ const PatientsList = () => {
                     className="add-btn"
                     onClick={() => viewProfile(patient.id)}
                   >
-                    View Detail
+                    Detail
                   </button>
                   {isAuthenticated && userRole === 'admin' && (
                     <button

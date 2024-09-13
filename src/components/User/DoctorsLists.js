@@ -15,18 +15,20 @@ const DoctorList = () => {
   const [doctorsPerPage] = useState(6);
 
   useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/doctors');
-        setDoctors(response.data);
-        setFilteredDoctors(response.data); // Initially show all doctors
-      } catch (error) {
-        setError('Error fetching doctor list.');
-      }
-    };
-
     fetchDoctors();
   }, []);
+
+  // Function to fetch doctors from the backend
+  const fetchDoctors = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/doctors');
+      setDoctors(response.data);
+      setFilteredDoctors(response.data); // Initially show all doctors
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+      alert('Error fetching doctors');
+    }
+  };
 
   // Filter doctors based on search query
   useEffect(() => {
@@ -64,6 +66,7 @@ const DoctorList = () => {
     try {
       await axios.delete(`http://localhost:5000/api/doctors/${doctorId}`);
       setDoctors(doctors.filter((doctor) => doctor.id !== doctorId)); // Remove the doctor from the list
+      fetchDoctors();
     } catch (error) {
       setError('Error deleting doctor.');
     }
@@ -102,7 +105,7 @@ const DoctorList = () => {
                   className="add-btn"
                   onClick={() => viewProfile(doctor.id)}
                 >
-                  View Detail
+                  Detail
                 </button>
                 {isAuthenticated && userRole === 'admin' && (
                   <button
