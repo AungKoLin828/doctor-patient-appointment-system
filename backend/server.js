@@ -101,12 +101,35 @@ app.delete('/api/doctors/:id', (req, res) => {
   // Find the index of the doctor with the given ID
   const userIndex = users.findIndex(user => user.id === doctorId);
   if (userIndex === -1) {
-    return res.status(404).json({ message: 'Doctor not found' });
+    return res.status(404).json({ message: 'User not found' });
   }
 
   // Remove doctor from the list
   doctors.splice(doctorIndex, 1);
+  users.splice(userIndex, 1);
   res.status(200).json({ message: 'Doctor deleted successfully' });
+});
+
+// Delete a patient by ID
+app.delete('/api/patients/:id', (req, res) => {
+  const doctorId = req.params.id;
+
+  // Find the index of the patient with the given ID
+  const patientsIndex = patients.findIndex(patient => patient.id === doctorId);
+  if (patientsIndex === -1) {
+    return res.status(404).json({ message: 'Patient not found' });
+  }
+
+  // Find the index of the patient with the given ID
+  const userIndex = users.findIndex(user => user.id === doctorId);
+  if (userIndex === -1) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // Remove doctor from the list
+  patients.splice(patientsIndex, 1);
+  users.splice(userIndex, 1);
+  res.status(200).json({ message: 'Patient deleted successfully' });
 });
 
 app.get('/api/admin/user-usage', (req, res) => {
