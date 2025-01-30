@@ -15,29 +15,35 @@ import DoctorList from './components/User/DoctorsLists';
 import PatientsLists from './components/User/PatientsLists';
 import { AuthProvider } from './components/AuthContext';
 import AdminDashboard from './components/User/AdminDashboard ';
+import { WebSocketProvider } from './components/WebSocketProvider';
+import Chat from './components/Chat';
 
 function App() {
   
   return (
     <div className="App">
       <AuthProvider>
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/register" element={<UserRegistration />} />
-            <Route path="/appointment" element={<AppointmentForm />} />
-            {/* <Route path="/userlists" element={<AppointmentsLists />} /> */}
-            <Route path="/doctorlist" element={<DoctorList />} />
-            <Route path="/patientlist" element={<PatientsLists />} />
-            <Route path="/patient/:id" element={<PatientProfile />} />
-            <Route path="/doctor/:id" element={<DoctorProfile />} />
-            <Route path="/dashboard" element={<AdminDashboard />} />
-          </Routes>
-          <Footer />
-        </Router>
+        <WebSocketProvider>
+          <Router>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/register" element={<UserRegistration />} />
+              <Route path="/appointment" element={<AppointmentForm />} />
+              {/* <Route path="/userlists" element={<AppointmentsLists />} /> */}
+              <Route path="/doctorlist" element={<DoctorList />} />
+              <Route path="/patientlist" element={<PatientsLists />} />
+              <Route path="/patient/:id" element={<PatientProfile />} />
+              <Route path="/doctor/:id" element={<DoctorProfile />} />
+              <Route path="/dashboard" element={<AdminDashboard />} />
+              <Route path="/doctor/chat/:id" element={<Chat />} />
+              <Route path="/messages" element={<Chat />} />
+            </Routes>
+            <Footer />
+          </Router>
+        </WebSocketProvider>
       </AuthProvider>
     </div>
   );

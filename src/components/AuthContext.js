@@ -4,10 +4,11 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
-
+  
   useEffect(() => {
     // Check if the user is authenticated by checking localStorage
     const savedAuthState = localStorage.getItem('isAuthenticated');
@@ -32,22 +33,24 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('isAuthenticated', true);
       localStorage.setItem('userRole', data.role);
       localStorage.setItem('userId', data.id);
+
     } catch (error) {
       console.error('Login failed:', error.response?.data?.message || error.message);
       setIsAuthenticated(false);
     }
   };
 
-  const logout = () => {
+  const logout = () => {    
     setIsAuthenticated(false);
     setUserRole(null);
     setUserId(null);
-    
+
     // Clear localStorage
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userId');
     localStorage.removeItem('loginUserName');
+    localStorage.removeItem('receiverName');
   };
 
   return (

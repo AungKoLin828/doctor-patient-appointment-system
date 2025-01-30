@@ -72,7 +72,6 @@ const PatientsList = () => {
     try {
       await axios.delete(`http://localhost:5000/api/patients/${patientId}`);
       setPatients(patients.filter((patient) => patient.id !== patientId)); // Remove deleted patient from state
-      setFilteredPatients(filteredPatients.filter((patient) => patient.id !== patientId)); // Update filtered list as well
       fetchPatients();
     } catch (error) {
       setError('Error deleting patient.');

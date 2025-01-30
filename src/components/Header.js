@@ -3,14 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import logoImg from '../logo.png';
 import { useAuth } from './AuthContext';
+import { useWebSocket } from './WebSocketProvider';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated, userRole, userId, logout } = useAuth();
   const navigate = useNavigate();
+  const { disconnectWebSocket } = useWebSocket();
 
   const handleLogout = () => {
     logout();
+    disconnectWebSocket();
     navigate('/login');
   };
 
@@ -34,7 +37,10 @@ const Header = () => {
             {isAuthenticated ? (
               <>
                 {userRole === 'doctor' && (
+                  <>
                   <li><Link to={`/doctor/${userId}`}>Profile</Link></li>
+                  <li><Link to="/messages">Messages</Link></li>
+                  </>
                 )}
                 {userRole === 'patient' && (
                   <>

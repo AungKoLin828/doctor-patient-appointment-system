@@ -2,10 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 5000;
+//const port = 5000;
 const fs = require('fs');
 const path = require('path');
 const dataPath = path.join(__dirname, './data.json');
+
+const http = require('http');
+const WebSocket = require('ws');
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Attach WebSocket server to the HTTP server
+const wss = new WebSocket.Server({ server });
 
 // Import data
 // Load data from the JSON file
@@ -13,6 +22,20 @@ let { users, doctors, patients, admin, appointments } = JSON.parse(fs.readFileSy
 // Middleware to handle CORS
 app.use(cors());
 app.use(bodyParser.json());
+
+// Function to read doctors from the JSON file
+const readDoctorsFromFile = () => {
+  try {
+    // Read the file synchronously
+    const data = fs.readFileSync(dataPath, 'utf-8');
+
+    // Parse the JSON string into an array of doctors
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading the doctors file:', error);
+    return []; // Return an empty array if there's an error
+  }
+};
 
 // Registration route
 app.post('/api/register', (req, res) => {
@@ -92,6 +115,7 @@ app.get('/api/appointments', (req, res) => {
 app.delete('/api/doctors/:id', (req, res) => {
   const doctorId = req.params.id;
 
+  let doctors = readDoctorsFromFile();
   // Find the index of the doctor with the given ID
   const doctorIndex = doctors.findIndex(doctor => doctor.id === doctorId);
   if (doctorIndex === -1) {
@@ -107,21 +131,23 @@ app.delete('/api/doctors/:id', (req, res) => {
   // Remove doctor from the list
   doctors.splice(doctorIndex, 1);
   users.splice(userIndex, 1);
+  writeDoctorsToFile(doctors); 
+  writeDoctorsToFile(users); 
   res.status(200).json({ message: 'Doctor deleted successfully' });
 });
 
 // Delete a patient by ID
 app.delete('/api/patients/:id', (req, res) => {
-  const doctorId = req.params.id;
+  const patientId = req.params.id;
 
   // Find the index of the patient with the given ID
-  const patientsIndex = patients.findIndex(patient => patient.id === doctorId);
+  const patientsIndex = patients.findIndex(patient => patient.id === patientId);
   if (patientsIndex === -1) {
     return res.status(404).json({ message: 'Patient not found' });
   }
 
   // Find the index of the patient with the given ID
-  const userIndex = users.findIndex(user => user.id === doctorId);
+  const userIndex = users.findIndex(user => user.id === patientId);
   if (userIndex === -1) {
     return res.status(404).json({ message: 'User not found' });
   }
@@ -141,8 +167,52 @@ app.get('/api/admin/user-usage', (req, res) => {
   res.json(userData);
 });
 
+// WebSocket server logic
+const clients = new Map();
 
-// Start the server
-app.listen(port, () => {
+wss.on('connection', (ws) => {
+  ws.on('message', (message) => {
+    try {
+      const parsedMessage = JSON.parse(message);
+      const { type, sender, recipient, content } = parsedMessage;
+
+      if (type === 'register') {
+        // Register the user with their WebSocket connection
+        clients.set(sender, ws);
+      } else if (type === 'private_message') {
+        // Send private message to the recipient
+        const recipientSocket = clients.get(recipient);
+
+        if (recipientSocket) {
+          // Send the message
+          recipientSocket.send(JSON.stringify({ sender, content }));
+          console.log(`Message Work Normally ${sender} + ${recipient} + ${content}`);
+          // Send a notification to the sender that the message was delivered
+          ws.send(JSON.stringify({ notification: `Message sent to ${recipient}` }));
+        } else {
+          // Notify the sender that the recipient is not online
+          ws.send(JSON.stringify({ notification: 'Recipient is not online' }));
+        }
+      }
+    } catch (error) {
+      console.error('Error processing WebSocket message:', error);
+    }
+  });
+
+  ws.on('close', () => {
+    // Remove disconnected clients
+    for (const [user, socket] of clients.entries()) {
+      if (socket === ws) {
+        clients.delete(user);
+        break;
+      }
+    }
+  });
+});
+
+// Start both HTTP and WebSocket servers
+const port = 5000;
+server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+  console.log(`WebSocket server running at ws://localhost:${port}`);
 });

@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+
   // Get login function from AuthContext
   const { login} = useAuth();
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Login = () => {
       // Redirect based on user role after successful login
       const userRole = localStorage.getItem(`userRole`);
       const userId = localStorage.getItem(`userId`);
-
+      
       if (userRole === 'doctor') {
         navigate(`/doctor/${userId}`);
       } else if (userRole === 'patient') {

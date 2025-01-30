@@ -72,6 +72,16 @@ const DoctorList = () => {
     }
   };
 
+  const chatWithDoctor = async (doctorId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/profile/doctor/${doctorId}`);
+      localStorage.setItem('receiverName', response.data.name);
+    } catch (error) {
+      console.error('Not Found doctor',error);
+    }
+    navigate(`/doctor/chat/${doctorId}`);
+  }
+
   return (
     <div className="doctor-patient-list-container">
       <h1 className="doctor-patient-list-title">Doctor List</h1>
@@ -106,6 +116,13 @@ const DoctorList = () => {
                   onClick={() => viewProfile(doctor.id)}
                 >
                   Detail
+                </button>
+                <button
+                  type="button"
+                  className="add-btn"
+                  onClick={() => chatWithDoctor(doctor.id)}
+                >
+                  Chat
                 </button>
                 {isAuthenticated && userRole === 'admin' && (
                   <button
