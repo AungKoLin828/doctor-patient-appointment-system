@@ -11,6 +11,7 @@ const Chat = () => {
   const [chat, setChat] = useState([]);
   const [recipient, setRecipient] = useState('');
   const messageInputRef = useRef();
+  const receiverName = localStorage.getItem('receiverName');
 
   // Connect WebSocket on mount
   useEffect(() => {
@@ -23,8 +24,13 @@ const Chat = () => {
   useEffect(() => {
     if (userRole === 'doctor') {
       // For doctors, bind recipient automatically
+      
       const autoRecipient = recipientID || recipientID; // Replace with actual logic
       setRecipient(autoRecipient);
+      if (autoRecipient !== undefined ){
+        setRecipient(autoRecipient);
+      }
+      
     } else if (userRole === 'patient') {
       // Patients should see the doctor as the recipient
       setRecipient(recipientID); // Ensure the recipient is the doctor
@@ -40,8 +46,11 @@ const Chat = () => {
       const { sender, content, notification } = messageData;
 
       if (userRole === 'doctor') {
-        alert(sender);
         setRecipient(sender);
+        if (sender !== undefined ){
+          localStorage.setItem('msgSender', sender);
+        }
+        setRecipient(localStorage.getItem('msgSender'))
       }
 
       if (notification) {
@@ -100,7 +109,7 @@ const Chat = () => {
             />
           </div>
         )}
-        {userRole === 'patient' && <p>Recipient: {recipient}</p>}
+        {userRole === 'patient' && <p>Recipient: {receiverName}</p>}
       </div>
       <div
         style={{
