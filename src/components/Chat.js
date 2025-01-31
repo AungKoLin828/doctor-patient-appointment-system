@@ -23,6 +23,7 @@ const Chat = () => {
 
   // Auto-bind recipient based on user role and context
   useEffect(() => {
+    
     if (userRole === 'doctor') {
       // For doctors, bind recipient automatically
       const autoRecipient = recipientID || recipientID; // Replace with actual logic
@@ -41,13 +42,12 @@ const Chat = () => {
     // Utility function to find a user's name by ID
     const findNameById = async (id) => {
       try {
-        if (userRole === 'doctor') {
-          const response = await axios.get(`http://localhost:5000/api/profile/patient/${id}`);
-          return response.data.name; // Return the patient's name
-        } else if (userRole === 'patient') {
-          const response = await axios.get(`http://localhost:5000/api/profile/doctor/${id}`);
-          return response.data.name; // Return the patient's name
-        }
+          const url =
+          userRole === 'doctor'
+            ? `http://localhost:5000/api/profile/patient/${id}`
+            : `http://localhost:5000/api/profile/doctor/${id}`;
+          const response = await axios.get(url);
+          return response.data.name;
       } catch (error) {
         console.error('Patient not found', error);
         return 'Unknown User';
