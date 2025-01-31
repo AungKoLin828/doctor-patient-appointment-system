@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import { useWebSocket } from './WebSocketProvider';
 
 const Chat = () => {
@@ -12,6 +13,18 @@ const Chat = () => {
   const [recipient, setRecipient] = useState('');
   const messageInputRef = useRef();
   const receiverName = localStorage.getItem('receiverName');
+  
+  // Utility function to find a user's name by ID
+  const findNameById = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/profile/patient/${id}`);
+      setRecipient(id);
+      return response.data.name; // Return the patient's name
+    } catch (error) {
+      console.error('Patient not found', error);
+      return 'Unknown User';
+    }
+  };
 
   // Connect WebSocket on mount
   useEffect(() => {
@@ -39,6 +52,7 @@ const Chat = () => {
 
   // Handle incoming messages
   useEffect(() => {
+
     if (!socket) return;
 
     const handleMessage = (event) => {
@@ -50,6 +64,7 @@ const Chat = () => {
         if (sender !== undefined ){
           localStorage.setItem('msgSender', sender);
         }
+        const senderName =  findNameById(sender); // Get the patient's name
         setRecipient(localStorage.getItem('msgSender'))
       }
 
@@ -77,6 +92,10 @@ const Chat = () => {
       return;
     }
 
+    if (!message.trim() || !recipient) {
+      return;
+    }
+
     if (message.trim() && recipient.trim()) {
       const messagePayload = {
         type: 'private_message',
@@ -98,10 +117,9 @@ const Chat = () => {
       <div>
         {userRole === 'doctor' && (
           <div>
-            <label htmlFor="recipient">Recipient: </label>
             <input
               id="recipient"
-              type="text"
+              type="hidden"
               value={recipient}
               placeholder="Recipient will be auto-filled"
               style={{ marginBottom: '10px', width: '100%' }}
