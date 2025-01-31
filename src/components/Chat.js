@@ -13,18 +13,6 @@ const Chat = () => {
   const [recipient, setRecipient] = useState('');
   const messageInputRef = useRef();
   const receiverName = localStorage.getItem('receiverName');
-  
-  // Utility function to find a user's name by ID
-  const findNameById = async (id) => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/profile/patient/${id}`);
-      setRecipient(id);
-      return response.data.name; // Return the patient's name
-    } catch (error) {
-      console.error('Patient not found', error);
-      return 'Unknown User';
-    }
-  };
 
   // Connect WebSocket on mount
   useEffect(() => {
@@ -37,13 +25,8 @@ const Chat = () => {
   useEffect(() => {
     if (userRole === 'doctor') {
       // For doctors, bind recipient automatically
-      
       const autoRecipient = recipientID || recipientID; // Replace with actual logic
       setRecipient(autoRecipient);
-      if (autoRecipient !== undefined ){
-        setRecipient(autoRecipient);
-      }
-      
     } else if (userRole === 'patient') {
       // Patients should see the doctor as the recipient
       setRecipient(recipientID); // Ensure the recipient is the doctor
@@ -55,7 +38,23 @@ const Chat = () => {
 
     if (!socket) return;
 
-    const handleMessage = (event) => {
+    // Utility function to find a user's name by ID
+    const findNameById = async (id) => {
+      try {
+        if (userRole === 'doctor') {
+          const response = await axios.get(`http://localhost:5000/api/profile/patient/${id}`);
+          return response.data.name; // Return the patient's name
+        } else if (userRole === 'patient') {
+          const response = await axios.get(`http://localhost:5000/api/profile/doctor/${id}`);
+          return response.data.name; // Return the patient's name
+        }
+      } catch (error) {
+        console.error('Patient not found', error);
+        return 'Unknown User';
+      }
+    };
+
+    const handleMessage = async (event) => {
       const messageData = JSON.parse(event.data);
       const { sender, content, notification } = messageData;
 
@@ -64,16 +63,18 @@ const Chat = () => {
         if (sender !== undefined ){
           localStorage.setItem('msgSender', sender);
         }
-        const senderName =  findNameById(sender); // Get the patient's name
         setRecipient(localStorage.getItem('msgSender'))
       }
 
       if (notification) {
         alert(notification); // Notify the user
       } else {
+        // Fetch the sender's name
+        const senderName = await findNameById(sender);
+        // Update chat with the sender's name
         setChat((prevChat) => [
           ...prevChat,
-          { sender: sender || 'System', content },
+          { sender: senderName || 'System', content },
         ]);
       }
     };
@@ -82,7 +83,7 @@ const Chat = () => {
     return () => {
       socket.removeEventListener('message', handleMessage);
     };
-  }, [userRole,socket]);
+  }, [socket, userRole]);
 
   // Send message
   const sendMessage = () => {
@@ -105,7 +106,10 @@ const Chat = () => {
       };
 
       socket.send(JSON.stringify(messagePayload));
-      setChat((prevChat) => [...prevChat, { sender: 'You', content: message }]);
+      setChat((prevChat) => [
+        ...prevChat,
+        { sender: 'You', content: message },
+      ]);
       setMessage('');
       messageInputRef.current.focus();
     }
@@ -127,7 +131,7 @@ const Chat = () => {
             />
           </div>
         )}
-        {userRole === 'patient' && <p>Recipient: {receiverName}</p>}
+        {userRole === 'patient' && <p>To : {receiverName}</p>}
       </div>
       <div
         style={{
@@ -150,7 +154,7 @@ const Chat = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message"
-          style={{ width: '80%' }}
+          style={{ width: '98%' }}
         />
         <button onClick={sendMessage} style={{ marginLeft: '5px' }}>
           Send
