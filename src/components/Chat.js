@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useWebSocket } from './WebSocketProvider';
+import EmojiPicker from 'emoji-picker-react';
 
 const Chat = () => {
   const { id: recipientID } = useParams(); // Gets recipient ID from the URL
@@ -11,6 +12,7 @@ const Chat = () => {
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
   const [recipient, setRecipient] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const messageInputRef = useRef();
   const receiverName = localStorage.getItem('receiverName');
 
@@ -54,7 +56,7 @@ const Chat = () => {
 
     const handleMessage = async (event) => {
       const messageData = JSON.parse(event.data);
-      const { sender, content, notification } = messageData;
+      const { sender, content, notification, reactions } = messageData;
 
       if (userRole === 'doctor') {
         setRecipient(sender);
@@ -72,7 +74,7 @@ const Chat = () => {
         // Update chat with the sender's name
         setChat((prevChat) => [
           ...prevChat,
-          { sender: senderName || 'System', content },
+          { sender: senderName || 'System', content, reactions: reactions || [] },
         ]);
       }
     };
@@ -106,11 +108,37 @@ const Chat = () => {
       socket.send(JSON.stringify(messagePayload));
       setChat((prevChat) => [
         ...prevChat,
-        { sender: 'You', content: message },
+        { sender: 'You', content: message, reactions: [] },
       ]);
       setMessage('');
       messageInputRef.current.focus();
     }
+  };
+
+  // Add emoji to message
+  const addEmojiToMessage = (emoji) => {
+    setMessage((prevMessage) => prevMessage + emoji.emoji);
+    setShowEmojiPicker(false);
+  };
+
+  // Add reaction to a message
+  const addReaction = (index, emoji) => {
+    const updatedChat = [...chat];
+    if (!updatedChat[index].reactions) {
+      updatedChat[index].reactions = [];
+    }
+    updatedChat[index].reactions.push(emoji.emoji);
+    setChat(updatedChat);
+
+    // Send reaction to the server (optional)
+    const reactionPayload = {
+      type: 'reaction',
+      sender: userId,
+      recipient,
+      messageIndex: index,
+      reaction: emoji.emoji,
+    };
+    socket.send(JSON.stringify(reactionPayload));
   };
 
   return (
@@ -174,24 +202,69 @@ const Chat = () => {
             }}
           >
             <strong>{entry.sender}:</strong> {entry.content}
+            <div style={{ marginTop: '5px' }}>
+              {entry.reactions?.map((reaction, i) => (
+                <span key={i} style={{ marginRight: '5px' }}>
+                  {reaction}
+                </span>
+              ))}
+              <button
+                onClick={() => setShowEmojiPicker(index)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                }}
+              >
+                😊
+              </button>
+              {showEmojiPicker === index && (
+                <div style={{ position: 'absolute', zIndex: 100 }}>
+                  <EmojiPicker onEmojiClick={(emoji) => addReaction(index, emoji)} />
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
       <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-        <input
-          type="text"
-          ref={messageInputRef}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message..."
-          style={{
-            flex: 1,
-            padding: '10px',
-            borderRadius: '10px',
-            border: '1px solid #ccc',
-            fontSize: '16px',
-          }}
-        />
+        <div style={{ position: 'relative', flex: 1 }}>
+          <input
+            type="text"
+            ref={messageInputRef}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type a message..."
+            style={{
+              width: '100%',
+              padding: '10px',
+              borderRadius: '10px',
+              border: '1px solid #ccc',
+              fontSize: '16px',
+            }}
+          />
+          <button
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            style={{
+              position: 'absolute',
+              left: '300px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}
+          >
+            😊
+          </button>
+          {showEmojiPicker && (
+            <div style={{ position: 'absolute', bottom: '40px', right: '0', zIndex: 100 }}>
+              <EmojiPicker onEmojiClick={addEmojiToMessage} />
+            </div>
+          )}
+        </div>
         <button
           onClick={sendMessage}
           style={{
