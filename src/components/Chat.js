@@ -23,7 +23,6 @@ const Chat = () => {
 
   // Auto-bind recipient based on user role and context
   useEffect(() => {
-    
     if (userRole === 'doctor') {
       // For doctors, bind recipient automatically
       const autoRecipient = recipientID || recipientID; // Replace with actual logic
@@ -36,18 +35,17 @@ const Chat = () => {
 
   // Handle incoming messages
   useEffect(() => {
-
     if (!socket) return;
 
     // Utility function to find a user's name by ID
     const findNameById = async (id) => {
       try {
-          const url =
+        const url =
           userRole === 'doctor'
             ? `http://localhost:5000/api/profile/patient/${id}`
             : `http://localhost:5000/api/profile/doctor/${id}`;
-          const response = await axios.get(url);
-          return response.data.name;
+        const response = await axios.get(url);
+        return response.data.name;
       } catch (error) {
         console.error('Patient not found', error);
         return 'Unknown User';
@@ -60,10 +58,10 @@ const Chat = () => {
 
       if (userRole === 'doctor') {
         setRecipient(sender);
-        if (sender !== undefined ){
+        if (sender !== undefined) {
           localStorage.setItem('msgSender', sender);
         }
-        setRecipient(localStorage.getItem('msgSender'))
+        setRecipient(localStorage.getItem('msgSender'));
       }
 
       if (notification) {
@@ -116,8 +114,21 @@ const Chat = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '400px', margin: 'auto', paddingTop: '70px' }}>
-      <h2>{userRole === 'doctor' ? 'Doctor Chat' : 'Patient Chat'}</h2>
+    <div
+      style={{
+        padding: '20px',
+        maxWidth: '500px',
+        margin: 'auto',
+        paddingTop: '150px',
+        fontFamily: 'Arial, sans-serif',
+        background: 'linear-gradient(135deg, #f5f7fa, #c3cfe2)',
+        borderRadius: '15px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+      }}
+    >
+      <h2 style={{ textAlign: 'center', color: '#333', marginBottom: '20px' }}>
+        {userRole === 'doctor' ? '👨‍⚕️ Doctor Chat' : '👩‍⚕️ Patient Chat'}
+      </h2>
       <div>
         {userRole === 'doctor' && (
           <div>
@@ -131,33 +142,72 @@ const Chat = () => {
             />
           </div>
         )}
-        {userRole === 'patient' && <p>To : {receiverName}</p>}
+        {userRole === 'patient' && (
+          <p style={{ textAlign: 'center', fontWeight: 'bold', color: '#555' }}>
+            To: Dr.{receiverName} 👩‍⚕️
+          </p>
+        )}
       </div>
       <div
         style={{
-          height: '200px',
+          height: '300px',
           overflowY: 'auto',
           border: '1px solid #ccc',
+          borderRadius: '10px',
           padding: '10px',
+          background: '#fff',
+          marginBottom: '10px',
         }}
       >
         {chat.map((entry, index) => (
-          <div key={index}>
+          <div
+            key={index}
+            style={{
+              marginBottom: '10px',
+              padding: '8px',
+              borderRadius: '10px',
+              background: entry.sender === 'You' ? '#e3f2fd' : '#f5f5f5',
+              alignSelf: entry.sender === 'You' ? 'flex-end' : 'flex-start',
+              maxWidth: '80%',
+              marginLeft: entry.sender === 'You' ? 'auto' : '0',
+              marginRight: entry.sender === 'You' ? '0' : 'auto',
+            }}
+          >
             <strong>{entry.sender}:</strong> {entry.content}
           </div>
         ))}
       </div>
-      <div style={{ marginTop: '10px' }}>
+      <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
         <input
           type="text"
           ref={messageInputRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message"
-          style={{ width: '98%' }}
+          placeholder="Type a message..."
+          style={{
+            flex: 1,
+            padding: '10px',
+            borderRadius: '10px',
+            border: '1px solid #ccc',
+            fontSize: '16px',
+          }}
         />
-        <button onClick={sendMessage} style={{ marginLeft: '2px', width: '98%', height:'35px', backgroundColor: 'blue'}}>
-          Send
+        <button
+          onClick={sendMessage}
+          style={{
+            padding: '10px 20px',
+            borderRadius: '10px',
+            border: 'none',
+            background: '#007bff',
+            color: '#fff',
+            fontSize: '16px',
+            cursor: 'pointer',
+            transition: 'background 0.3s ease',
+          }}
+          onMouseOver={(e) => (e.target.style.background = '#0056b3')}
+          onMouseOut={(e) => (e.target.style.background = '#007bff')}
+        >
+          Send ✉️
         </button>
       </div>
     </div>
