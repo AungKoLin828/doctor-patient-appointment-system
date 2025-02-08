@@ -42,13 +42,14 @@ app.post('/api/register', (req, res) => {
   const { username, password, role, id, name, phone, specialty, license, hospital, educationList, age, address } = req.body;
 
   // Check if username or ID already exists
-  const existingUser = users.find(user => user.username === username || user.id === id);
+  const existingUser = users.find(user => user.phone === phone || user.id === id);
   if (existingUser) {
     return res.status(400).json({ message: 'Username or ID already exists' });
   }
 
   // Add new user to the users array
-  users.push({ username, password, role, id });
+  //users.push({ username, password, role, id });
+  users.push({ phone, password, role, id });
 
   // Add new user to the corresponding role-based array
   if (role === 'doctor') {
@@ -64,14 +65,14 @@ app.post('/api/register', (req, res) => {
   // Save updated data to the JSON file
   fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2));
 
-  res.status(201).json({ message: 'Registration successful', user: { username, role, id } });
+  res.status(201).json({ message: 'Registration successful', user: { phone, role, id } });
 });
 
 // Login route
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
 
-  const user = users.find(user => user.username === username && user.password === password);
+  const user = users.find(user => user.phone === username && user.password === password);
 
   if (user) {
     res.status(200).json({ message: 'Login successful', role: user.role, id: user.id });
