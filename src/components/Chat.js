@@ -156,7 +156,7 @@ const Chat = () => {
           placeholder="Type a message"
           style={{ width: '98%' }}
         />
-        <button onClick={sendMessage} style={{ marginLeft: '2px' }}>
+        <button onClick={sendMessage} style={{ marginLeft: '2px', width: '98%', height:'35px', backgroundColor: 'blue'}}>
           Send
         </button>
       </div>

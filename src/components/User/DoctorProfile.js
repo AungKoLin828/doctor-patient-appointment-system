@@ -4,17 +4,14 @@ import axios from 'axios';
 import '../Common.css';
 import profileImg from '../../assets/images/download.jpg';
 import { useAuth } from '../AuthContext';
-import Modal from 'react-modal';
-
-Modal.setAppElement('#root'); // To avoid accessibility issues
+import CustomModal from '../CustomModal'; // Import Custom Modal
 
 const DoctorProfile = () => {
   const { id } = useParams();
   const { isAuthenticated, userRole } = useAuth();
   const [doctor, setDoctor] = useState(null);
   const [error, setError] = useState('');
-  // const [isEditing, setIsEditing] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Modal state
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const [editedDoctor, setEditedDoctor] = useState({
@@ -22,16 +19,17 @@ const DoctorProfile = () => {
     phone: '',
     hospital: '',
     specialty: '',
-    address: ''
+    address: '',
+    license: '',
   });
 
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
-        console.log("ID" + id);
+        console.log("Fetching doctor with ID:", id);
         const response = await axios.get(`http://localhost:5000/api/profile/doctor/${id}`);
         setDoctor(response.data);
-        setEditedDoctor(response.data); // Set initial values for editing
+        setEditedDoctor(response.data);
       } catch (error) {
         setError('Error fetching doctor details.');
       }
@@ -44,15 +42,15 @@ const DoctorProfile = () => {
   if (!doctor) return <div>Loading...</div>;
 
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page in the history stack
+    navigate(-1);
   };
 
-  const handleMakeAppointment = (doctor) => {
+  const handleMakeAppointment = () => {
     navigate('/appointment', { state: { doctorId: doctor.id, doctorName: doctor.name } });
   };
 
   const handleEditToggle = () => {
-    setModalIsOpen(true); // Open the modal for editing
+    setModalIsOpen(true);
   };
 
   const handleInputChange = (e) => {
@@ -63,8 +61,8 @@ const DoctorProfile = () => {
   const handleSaveChanges = async () => {
     try {
       await axios.put(`http://localhost:5000/api/profile/doctor/${id}`, editedDoctor);
-      setDoctor(editedDoctor); // Update the local state with the new data
-      setModalIsOpen(false); // Close the modal after saving
+      setDoctor(editedDoctor);
+      setModalIsOpen(false);
     } catch (error) {
       setError('Error updating doctor details.');
     }
@@ -107,7 +105,7 @@ const DoctorProfile = () => {
             {isAuthenticated && userRole === 'patient' && (
               <>
                 <button onClick={handleBack}>Back</button>
-                <button onClick={() => handleMakeAppointment(doctor)}>Make Appointment</button>
+                <button onClick={handleMakeAppointment}>Make Appointment</button>
               </>
             )}
             {isAuthenticated && userRole === 'admin' && (
@@ -119,46 +117,21 @@ const DoctorProfile = () => {
         </div>
       </div>
 
-      {/* Modal for Editing */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        contentLabel="Edit Doctor Profile"
-        className="modal-content"
-        overlayClassName="modal-overlay"
-      >
+      {/* Custom Modal for Editing */}
+      <CustomModal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
         <h2>Edit Doctor Profile</h2>
         <div className="edit-form">
           <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={editedDoctor.name}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="name" value={editedDoctor.name} onChange={handleInputChange} disabled/>
           
           <label>Phone:</label>
-          <input
-            type="text"
-            name="phone"
-            value={editedDoctor.phone}
-            onChange={handleInputChange}
-          />
-          
+          <input type="text" name="phone" value={editedDoctor.phone} onChange={handleInputChange} />
+
           <label>Hospital:</label>
-          <input
-            type="text"
-            name="hospital"
-            value={editedDoctor.hospital}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="hospital" value={editedDoctor.hospital} onChange={handleInputChange} />
           
           <label>Specialty:</label>
-          <select
-            name="specialty"
-            value={editedDoctor.specialty}
-            onChange={handleInputChange}
-          >
+          <select name="specialty" value={editedDoctor.specialty} onChange={handleInputChange}>
             <option value="">Select One</option>
             <option value="Neurology Specialist">Neurology Specialist</option>
             <option value="Eye Specialist">Eye Specialist</option>
@@ -167,20 +140,18 @@ const DoctorProfile = () => {
             <option value="ENT Specialist">ENT Specialist</option>
           </select>
           
+          <label>Medical License:</label>
+          <input type="text" name="license" value={editedDoctor.license} onChange={handleInputChange} disabled/>
+          
           <label>Address:</label>
-          <input
-            type="text"
-            name="address"
-            value={editedDoctor.address}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="address" value={editedDoctor.address} onChange={handleInputChange} />
 
           <div className="modal-actions">
             <button onClick={handleSaveChanges}>Save Changes</button>
             <button onClick={() => setModalIsOpen(false)}>Cancel</button>
           </div>
         </div>
-      </Modal>
+      </CustomModal>
     </div>
   );
 };

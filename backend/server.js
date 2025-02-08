@@ -112,6 +112,20 @@ app.get('/api/appointments', (req, res) => {
   res.json(appointments);
 });
 
+app.put('/api/user/update/:id', async (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  try {
+    // Update user data in the database
+    await users.findByIdAndUpdate(id, updatedData, { new: true });
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Failed to update user' });
+  }
+});
+
 // Delete a doctor by ID
 app.delete('/api/doctors/:id', (req, res) => {
   const doctorId = req.params.id;

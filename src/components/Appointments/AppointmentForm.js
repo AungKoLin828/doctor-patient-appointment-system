@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom'; // For retrieving passed doctor data
+import { useLocation,useNavigate } from 'react-router-dom'; // For retrieving passed doctor data
 import '../Common.css';
 import axios from 'axios';
 import { useAuth } from '../AuthContext'; // Assuming you're using an AuthContext for authentication
@@ -9,9 +9,14 @@ const AppointmentForm = ({ fetchAppointments }) => {
   const [doctorName, setDoctorName] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
+  const navigate = useNavigate();
 
   const location = useLocation();
   const { userId} = useAuth(); // Retrieve logged-in user data
+
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
     // Auto-bind the doctor info from location state (passed from DoctorList)
@@ -74,7 +79,8 @@ const AppointmentForm = ({ fetchAppointments }) => {
           required
         />
       </div>
-      <button type="submit">Book Appointment</button>
+      <button className='add-btn' type="submit">Book Appointment</button>
+      <button className='add-btn' onClick={handleBack}>Back</button>
     </form>
   );
 };

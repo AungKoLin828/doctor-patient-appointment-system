@@ -89,7 +89,7 @@
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: lightblue;
+    background-color: #007bff;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -131,8 +131,8 @@
   }
   
   button {
-    width: 100%;
-    padding: 10px;
+    width: 30%;
+    padding: 0px;
     background-color: lightblue;
     color: #fff;
     border: none;
@@ -196,8 +196,8 @@ li {
 
 /* DoctorProfile.css */
 .profile-img {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 20px;
@@ -244,12 +244,11 @@ li {
 
 .profile-actions {
   display: flex;
-  justify-content: space-between;
   margin-top: 20px;
 }
 
 .profile-actions button {
-  background: lightblue;
+  background: #007bff;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -410,3 +409,4 @@ li {
 .chart-container {
   margin-top: 40px;
 }
+
