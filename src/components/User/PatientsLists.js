@@ -98,7 +98,6 @@ const PatientsList = () => {
             <th>Age</th>
             <th>Address</th>
             <th>Phone</th>
-            <th>Condition</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -110,7 +109,6 @@ const PatientsList = () => {
                 <td>{patient.age}</td>
                 <td>{patient.address}</td>
                 <td>{patient.phone}</td>
-                <td>{patient.condition}</td>
                 <td>
                   <button
                     type="button"

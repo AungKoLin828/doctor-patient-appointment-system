@@ -410,3 +410,34 @@ li {
   margin-top: 40px;
 }
 
+.textarea-custom {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  outline: none;
+  resize: vertical; /* Allows vertical resizing */
+  transition: all 0.3s ease-in-out;
+}
+
+.textarea-custom:focus {
+  border-color: blue; /* Darker green on focus */
+  box-shadow: 0 0 10px rgba(46, 139, 87, 0.5);
+}
+
+.select-custom {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #4CAF50; /* Green border */
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.select-custom:focus {
+  border-color: #2E8B57; /* Darker green on focus */
+  box-shadow: 0 0 10px rgba(46, 139, 87, 0.5);
+}

@@ -186,7 +186,7 @@ const UserRegistration = ({ fetchUser }) => {
             <select
               value={specialty}
               onChange={(e) => setSpecialty(e.target.value)}
-              required
+              required 
             >
               <option value="">Select One</option>
               <option value="Neurology Specialist">Neurology Specialist</option>
@@ -263,7 +263,7 @@ const UserRegistration = ({ fetchUser }) => {
         </>
       )}
 
-      <button type="submit">Add User</button>
+      <button type="submit" style={{ width: '100%', height: '30px'}}>Add User</button>
     </form>
   );
 };
