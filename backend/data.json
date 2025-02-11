@@ -7,12 +7,6 @@
       "id": "A0001"
     },
     {
-      "phone": "09450821620",
-      "password": "password1",
-      "role": "patient",
-      "id": "P6279"
-    },
-    {
       "phone": "09450821621",
       "password": "password1",
       "role": "doctor",
@@ -23,6 +17,12 @@
       "password": "password1",
       "role": "doctor",
       "id": "D5124"
+    },
+    {
+      "phone": "09450821620",
+      "password": "password1",
+      "role": "patient",
+      "id": "P8875"
     }
   ],
   "doctors": [
@@ -30,7 +30,7 @@
       "id": "D4752",
       "name": "AungKoLin",
       "phone": "09450821621",
-      "specialty": "Eye Specialist",
+      "specialty": "Heart Specialist",
       "license": "RN-112233",
       "hospital": "Yangon Hospital",
       "educationList": [
@@ -40,7 +40,7 @@
           "year": "2010"
         }
       ],
-      "address": "No.48, Mar Lar Mying(5)"
+      "address": "No.48, Mar Lar Mying"
     },
     {
       "id": "D5124",
@@ -66,10 +66,10 @@
   ],
   "patients": [
     {
-      "id": "P6279",
+      "id": "P8875",
       "name": "AungAung",
       "phone": "09450821620",
-      "age": "31",
+      "age": "23",
       "address": "No.48, Mar Lar Mying(5)"
     }
   ],

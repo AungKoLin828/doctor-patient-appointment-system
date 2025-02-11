@@ -112,19 +112,60 @@ app.get('/api/appointments', (req, res) => {
   res.json(appointments);
 });
 
-app.put('/api/user/update/:id', async (req, res) => {
+//Update Patient
+app.put('/api/update/patient/:id', (req, res) => {
   const { id } = req.params;
   const updatedData = req.body;
 
-  try {
-    // Update user data in the database
-    await users.findByIdAndUpdate(id, updatedData, { new: true });
-    res.status(200).json({ message: 'User updated successfully' });
-  } catch (error) {
-    console.error('Error updating user:', error);
-    res.status(500).json({ message: 'Failed to update user' });
+  // Find patient index
+  const patientIndex = patients.findIndex(patient => patient.id === id);
+  if (patientIndex === -1) {
+    return res.status(404).json({ message: 'Patient not found' });
   }
+
+  // Find corresponding user index
+  const userIndex = users.findIndex(user => user.id === id);
+  if (userIndex === -1) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // Update patient details
+  patients[patientIndex] = { ...patients[patientIndex], ...updatedData };
+
+  // Update user details (especially phone)
+  users[userIndex].phone = updatedData.phone;
+
+  // Write updated data back to the JSON file
+  fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
+
+  res.status(200).json({ message: 'Patient updated successfully', patient: patients[patientIndex] });
 });
+
+//Update doctor
+app.put('/api/update/doctor/:id', (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  console.log('Received Data:', updatedData); // Debugging
+
+  const userIndex = users.findIndex(user => user.id === id);
+  if (userIndex === -1) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  const doctorIndex = doctors.findIndex(doctor => doctor.id === id);
+  if (doctorIndex === -1) {
+    return res.status(404).json({ message: 'Doctor not found' });
+  }
+
+  users[userIndex].phone = updatedData.phone;
+  doctors[doctorIndex] = { ...doctors[doctorIndex], ...updatedData };
+
+  fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
+
+  res.status(200).json({ message: 'Doctor updated successfully', doctor: doctors[doctorIndex] });
+});
+
 
 // Delete a doctor by ID
 app.delete('/api/doctors/:id', (req, res) => {

@@ -97,11 +97,14 @@ const DoctorProfile = () => {
   };
 
   const handleSaveChanges = async () => {
+    console.log('Updating Doctor:', editedDoctor); // Debugging
+  
     try {
-      await axios.put(`http://localhost:5000/api/profile/doctor/${id}`, editedDoctor);
+      await axios.put(`http://localhost:5000/api/update/doctor/${id}`, editedDoctor);
       setDoctor(editedDoctor);
       setEditModalIsOpen(false);
     } catch (error) {
+      console.error('Error updating doctor:', error);
       setError('Error updating doctor details.');
     }
   };

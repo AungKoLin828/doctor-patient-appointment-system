@@ -56,7 +56,7 @@ const PatientProfile = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/profile/patient/${id}`, editedPatient);
+      await axios.put(`http://localhost:5000/api/update/patient/${id}`, editedPatient);
       setPatient(editedPatient);
       setModalIsOpen(false);
     } catch (error) {
