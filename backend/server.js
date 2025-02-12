@@ -68,57 +68,6 @@ app.post('/api/register', (req, res) => {
   res.status(201).json({ message: 'Registration successful', user: { phone, role, id } });
 });
 
-// Function to generate a unique appointment ID
-function generateAppointmentId() {
-  return "APT-" + Math.random().toString().slice(2, 6).toUpperCase();
-}
-
-// Make Appointment 
-app.post("/api/appointments", (req, res) => {
-  try {
-    // Read existing data
-    let rawData = fs.readFileSync(dataPath);
-    let data = JSON.parse(rawData);
-
-    // Generate a new unique appointment ID
-    const appointmentId = generateAppointmentId();
-
-    // Extract appointment details from request body
-    const { doctorId, doctorName, patientId, patientName, patientPhone, date, time, reason } = req.body;
-
-    // Create new appointment object
-    const newAppointment = {
-      id: appointmentId,
-      doctorId,
-      doctorName,
-      patientId,
-      patientName,
-      patientPhone,
-      date,
-      time,
-      reason,
-      status: "Pending", // Default status
-    };
-
-    console.log('Appointment Data:', newAppointment); // Debugging
-    // Add the new appointment to the appointments array
-    data.appointments.push(newAppointment);
-
-    // Save updated data back to the JSON file
-    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
-
-    // Send response
-    res.status(201).json({
-      message: "Appointment booked successfully",
-      appointment: newAppointment,
-    });
-  } catch (error) {
-    console.error("Error booking appointment:", error);
-    res.status(500).json({ message: "Error booking appointment" });
-  }
-});
-
-
 // Login route
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
@@ -159,10 +108,6 @@ app.get('/api/patients', (req, res) => {
   res.json(patients);
 });
 
-app.get('/api/appointments', (req, res) => {
-  res.json(appointments);
-});
-
 //Update Patient
 app.put('/api/update/patient/:id', (req, res) => {
   const { id } = req.params;
@@ -193,28 +138,57 @@ app.put('/api/update/patient/:id', (req, res) => {
 });
 
 //Update doctor
-app.put('/api/update/doctor/:id', (req, res) => {
-  const { id } = req.params;
-  const updatedData = req.body;
+app.put("/api/update/doctor/:id", (req, res) => {
+  try {
+    // Read existing data from the JSON file
+    let rawData = fs.readFileSync(dataPath, "utf-8");
+    let data = JSON.parse(rawData);
 
-  console.log('Received Data:', updatedData); // Debugging
+    const { id } = req.params;
+    const updatedData = req.body;
 
-  const userIndex = users.findIndex(user => user.id === id);
-  if (userIndex === -1) {
-    return res.status(404).json({ message: 'User not found' });
+    console.log("Received Data:", updatedData); // Debugging
+
+    // Find user associated with the doctor
+    const userIndex = data.users.findIndex((user) => user.id === id);
+    if (userIndex === -1) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find doctor in the doctors list
+    const doctorIndex = data.doctors.findIndex((doctor) => doctor.id === id);
+    if (doctorIndex === -1) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    // Update user details (especially phone)
+    data.users[userIndex].phone = updatedData.phone || data.users[userIndex].phone;
+
+    // Update doctor details
+    data.doctors[doctorIndex] = {
+      ...data.doctors[doctorIndex], // Preserve existing details
+      ...updatedData, // Apply new updates
+    };
+
+    // Update doctor name & phone in all associated appointments
+    data.appointments = data.appointments.map((appt) =>
+      appt.doctorId === id
+        ? { 
+            ...appt, 
+            doctorName: updatedData.name || appt.doctorName, 
+            doctorPhone: updatedData.phone || appt.doctorPhone 
+          }
+        : appt
+    );
+
+    // Save updated data back to the JSON file
+    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2), "utf-8");
+
+    res.status(200).json({ message: "Doctor updated successfully", doctor: data.doctors[doctorIndex] });
+  } catch (error) {
+    console.error("Error updating doctor:", error);
+    res.status(500).json({ message: "Error updating doctor" });
   }
-
-  const doctorIndex = doctors.findIndex(doctor => doctor.id === id);
-  if (doctorIndex === -1) {
-    return res.status(404).json({ message: 'Doctor not found' });
-  }
-
-  users[userIndex].phone = updatedData.phone;
-  doctors[doctorIndex] = { ...doctors[doctorIndex], ...updatedData };
-
-  fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
-
-  res.status(200).json({ message: 'Doctor updated successfully', doctor: doctors[doctorIndex] });
 });
 
 
@@ -266,6 +240,75 @@ app.delete('/api/patients/:id', (req, res) => {
 });
 
 
+// Function to generate a unique appointment ID
+function generateAppointmentId() {
+  return "APT-" + Math.random().toString().slice(2, 6).toUpperCase();
+}
+
+// Make Appointment 
+app.post("/api/appointments", (req, res) => {
+  try {
+    // Read existing data
+    let rawData = fs.readFileSync(dataPath);
+    let data = JSON.parse(rawData);
+
+    // Generate a new unique appointment ID
+    const appointmentId = generateAppointmentId();
+
+    // Extract appointment details from request body
+    const { doctorId, doctorName, patientId, patientName, patientPhone, date, time, reason } = req.body;
+
+    // Create new appointment object
+    const newAppointment = {
+      id: appointmentId,
+      doctorId,
+      doctorName,
+      patientId,
+      patientName,
+      patientPhone,
+      date,
+      time,
+      reason,
+      status: "Pending", // Default status
+    };
+
+    console.log('Appointment Data:', newAppointment); // Debugging
+    // Add the new appointment to the appointments array
+    data.appointments.push(newAppointment);
+
+    // Save updated data back to the JSON file
+    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+
+    // Send response
+    res.status(201).json({
+      message: "Appointment booked successfully",
+      appointment: newAppointment,
+    });
+  } catch (error) {
+    console.error("Error booking appointment:", error);
+    res.status(500).json({ message: "Error booking appointment" });
+  }
+});
+
+// View Appointment lists
+app.get('/api/view-appointments', (req, res) => {
+  const { doctorId } = req.query;
+  console.log('Doctor ID is :', doctorId); // Debugging
+  if (!doctorId) return res.status(400).json({ message: "Doctor ID required" });
+
+  try {
+    const rawData = fs.readFileSync(dataPath);
+    const data = JSON.parse(rawData);
+    
+    const doctorAppointments = data.appointments.filter(app => app.doctorId === doctorId);
+    console.log('Appointment List:', doctorAppointments); // Debugging
+    res.status(200).json(doctorAppointments);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving appointments" });
+  }
+});
+
+// For Admin Site
 app.get('/api/admin/user-usage', (req, res) => {
   const userData = [
     { name: 'User 1', usage: 5 },

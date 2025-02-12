@@ -14,6 +14,10 @@ const DoctorProfile = () => {
   const [error, setError] = useState('');
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [appointmentModalIsOpen, setAppointmentModalIsOpen] = useState(false);
+  const [appointmentListModalIsOpen, setAppointmentListModalIsOpen] = useState(false);
+  const [appointmentDetailsModalIsOpen, setAppointmentDetailsModalIsOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null); // Store selected appointment
+  const [appointments, setAppointments] = useState([]); 
   const navigate = useNavigate();
   var loginId = localStorage.getItem('userId')
 
@@ -71,6 +75,15 @@ const DoctorProfile = () => {
     }
   };
 
+  const fetchAppointments = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/view-appointments?doctorId=${id}`);
+      setAppointments(response.data);
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    }
+  };
+
   const handleMakeAppointment = async () => {
 
     const patientData = await fetchPatientDetails(); // Wait for patient data
@@ -94,6 +107,16 @@ const DoctorProfile = () => {
   const handleAppointmentChange = (e) => {
     const { name, value } = e.target;
     setAppointment({ ...appointment, [name]: value });
+  };
+
+  const handleViewAppointments = () => {
+    fetchAppointments();
+    setAppointmentListModalIsOpen(true);
+  };
+
+  const handleOpenAppointmentDetails = (appointment) => {
+    setSelectedAppointment(appointment);
+    setAppointmentDetailsModalIsOpen(true);
   };
 
   const handleSaveChanges = async () => {
@@ -156,7 +179,7 @@ const DoctorProfile = () => {
             {isAuthenticated && userRole === 'doctor' && (
               <>
                 <button onClick={handleEditToggle}>Edit Profile</button>
-                <button>View Appointments</button>
+                <button onClick={handleViewAppointments}>View Appointments</button>
               </>
             )}
             {isAuthenticated && userRole === 'patient' && (
@@ -244,6 +267,58 @@ const DoctorProfile = () => {
           </div>
         </div>
       </CustomModal>
+
+      {/* Modal: View All Appointments */}
+      <CustomModal isOpen={appointmentListModalIsOpen} onClose={() => setAppointmentListModalIsOpen(false)}>
+        <h2>Appointments for Dr. {doctor.name}</h2>
+        {appointments.length > 0 ? (
+          <table className="appointment-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.map((appointment) => (
+                <tr key={appointment.id}>
+                  <td>{appointment.id}</td>
+                  <td>{appointment.patientName}</td>
+                  <td>{appointment.date}</td>
+                  <td>{appointment.time}</td>
+                  <td>{appointment.status}</td>
+                  <td>
+                    <button onClick={() => handleOpenAppointmentDetails(appointment)}>View</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No appointments found.</p>
+        )}
+      </CustomModal>
+
+      {/* Modal: Appointment Details */}
+      <CustomModal isOpen={appointmentDetailsModalIsOpen} onClose={() => setAppointmentDetailsModalIsOpen(false)}>
+        {selectedAppointment && (
+          <div>
+            <h2>Appointment Details</h2>
+            <p><strong>ID:</strong> {selectedAppointment.id}</p>
+            <p><strong>Patient Name:</strong> {selectedAppointment.patientName}</p>
+            <p><strong>Phone:</strong> {selectedAppointment.patientPhone}</p>
+            <p><strong>Date:</strong> {selectedAppointment.date}</p>
+            <p><strong>Time:</strong> {selectedAppointment.time}</p>
+            <p><strong>Reason:</strong> {selectedAppointment.reason}</p>
+            <p><strong>Status:</strong> {selectedAppointment.status}</p>
+          </div>
+        )}
+      </CustomModal>
+
     </div>
   );
 };
