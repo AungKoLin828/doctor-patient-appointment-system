@@ -68,6 +68,57 @@ app.post('/api/register', (req, res) => {
   res.status(201).json({ message: 'Registration successful', user: { phone, role, id } });
 });
 
+// Function to generate a unique appointment ID
+function generateAppointmentId() {
+  return "APT-" + Math.random().toString().slice(2, 6).toUpperCase();
+}
+
+// Make Appointment 
+app.post("/api/appointments", (req, res) => {
+  try {
+    // Read existing data
+    let rawData = fs.readFileSync(dataPath);
+    let data = JSON.parse(rawData);
+
+    // Generate a new unique appointment ID
+    const appointmentId = generateAppointmentId();
+
+    // Extract appointment details from request body
+    const { doctorId, doctorName, patientId, patientName, patientPhone, date, time, reason } = req.body;
+
+    // Create new appointment object
+    const newAppointment = {
+      id: appointmentId,
+      doctorId,
+      doctorName,
+      patientId,
+      patientName,
+      patientPhone,
+      date,
+      time,
+      reason,
+      status: "Pending", // Default status
+    };
+
+    console.log('Appointment Data:', newAppointment); // Debugging
+    // Add the new appointment to the appointments array
+    data.appointments.push(newAppointment);
+
+    // Save updated data back to the JSON file
+    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+
+    // Send response
+    res.status(201).json({
+      message: "Appointment booked successfully",
+      appointment: newAppointment,
+    });
+  } catch (error) {
+    console.error("Error booking appointment:", error);
+    res.status(500).json({ message: "Error booking appointment" });
+  }
+});
+
+
 // Login route
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
@@ -213,6 +264,7 @@ app.delete('/api/patients/:id', (req, res) => {
   users.splice(userIndex, 1);
   res.status(200).json({ message: 'Patient deleted successfully' });
 });
+
 
 app.get('/api/admin/user-usage', (req, res) => {
   const userData = [
