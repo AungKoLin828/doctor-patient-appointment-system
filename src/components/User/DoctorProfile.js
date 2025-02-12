@@ -36,6 +36,7 @@ const DoctorProfile = () => {
     doctorName: '',
     patientName: '',
     patientPhone: '',
+    doctorPhone: '',
     date: '',
     time: '',
     reason: '',
@@ -141,6 +142,7 @@ const DoctorProfile = () => {
         doctorId: doctor.id,
         doctorName: doctor.name,
         patientId: patient.id, // Include patient ID
+        doctorPhone: doctor.phone,
         ...appointment,
       });
       alert('Appointment booked successfully!');

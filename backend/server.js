@@ -255,7 +255,7 @@ app.post("/api/appointments", (req, res) => {
     const appointmentId = generateAppointmentId();
 
     // Extract appointment details from request body
-    const { doctorId, doctorName, patientId, patientName, patientPhone, date, time, reason } = req.body;
+    const { doctorId, doctorName, patientId, patientName, patientPhone,doctorPhone, date, time, reason } = req.body;
 
     // Create new appointment object
     const newAppointment = {
@@ -265,6 +265,7 @@ app.post("/api/appointments", (req, res) => {
       patientId,
       patientName,
       patientPhone,
+      doctorPhone,
       date,
       time,
       reason,
@@ -300,6 +301,24 @@ app.get('/api/view-appointments', (req, res) => {
     const data = JSON.parse(rawData);
     
     const doctorAppointments = data.appointments.filter(app => app.doctorId === doctorId);
+    console.log('Appointment List:', doctorAppointments); // Debugging
+    res.status(200).json(doctorAppointments);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving appointments" });
+  }
+});
+
+// View Appointment lists
+app.get('/api/view-patient-appointments', (req, res) => {
+  const { patientId } = req.query;
+  console.log('Patient ID is :', patientId); // Debugging
+  if (!patientId) return res.status(400).json({ message: "patient ID required" });
+
+  try {
+    const rawData = fs.readFileSync(dataPath);
+    const data = JSON.parse(rawData);
+    
+    const doctorAppointments = data.appointments.filter(app => app.patientId === patientId);
     console.log('Appointment List:', doctorAppointments); // Debugging
     res.status(200).json(doctorAppointments);
   } catch (error) {
