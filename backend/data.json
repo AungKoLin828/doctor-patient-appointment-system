@@ -23,6 +23,12 @@
       "password": "password1",
       "role": "patient",
       "id": "P8875"
+    },
+    {
+      "phone": "09450821623",
+      "password": "password1",
+      "role": "patient",
+      "id": "P3300"
     }
   ],
   "doctors": [
@@ -71,6 +77,13 @@
       "phone": "09450821620",
       "age": "35",
       "address": "No.48, Mar Lar Mying"
+    },
+    {
+      "id": "P3300",
+      "name": "AungMyo",
+      "phone": "09450821623",
+      "age": "30",
+      "address": "Yangon"
     }
   ],
   "admin": [
