@@ -326,6 +326,26 @@ app.get('/api/view-patient-appointments', (req, res) => {
   }
 });
 
+// Update Appointment
+app.put('/api/appointments/status/:id', (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  // Find appointment index
+  const appointmentIndex = appointments.findIndex(appointment => appointment.id === id);
+  if (appointmentIndex === -1) {
+    return res.status(404).json({ message: 'Appointment not found' });
+  }
+
+  // Update appointment details (e.g., status)
+  appointments[appointmentIndex] = { ...appointments[appointmentIndex], ...updatedData };
+
+  // Write updated data back to the JSON file
+  fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
+
+  res.status(200).json({ message: 'Appointment updated successfully', appointment: appointments[appointmentIndex] });
+});
+
 // For Admin Site
 app.get('/api/admin/user-usage', (req, res) => {
   const userData = [

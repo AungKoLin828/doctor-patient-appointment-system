@@ -152,6 +152,16 @@ const DoctorProfile = () => {
     }
   };
 
+  const handleChangeStatus = async (appointmentId, newStatus) => {
+    try {
+      await axios.put(`http://localhost:5000/api/appointments/status/${appointmentId}`, { status: newStatus });
+      alert('Appointment status updated successfully');
+      fetchAppointments(); // Refresh the appointment list
+    } catch (error) {
+      console.error('Error updating status:', error);
+      setError('Error updating appointment status.');
+    }
+  };
   return (
     <div className="doctor-profile">
       <h1>Doctor Profile</h1>
@@ -295,9 +305,17 @@ const DoctorProfile = () => {
                     <td>{appointment.patientName}</td>
                     <td>{appointment.date}</td>
                     <td>{appointment.time}</td>
-                    <td>
-                      <span className={`status ${appointment.status.toLowerCase()}`}>{appointment.status}</span>
-                    </td>
+                      {userRole === 'doctor' && (
+                          <select className='select-custom'
+                            onChange={(e) => handleChangeStatus(appointment.id, e.target.value)} 
+                            value={appointment.status}
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Canceled">Canceled</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Completed">Completed</option>
+                          </select>
+                        )}
                     <td>
                       <button className="view-btn" style={{ width: '100%', height: '30px'}} onClick={() => handleOpenAppointmentDetails(appointment)}>
                         View

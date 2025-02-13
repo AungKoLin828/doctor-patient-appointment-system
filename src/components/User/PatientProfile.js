@@ -153,7 +153,7 @@ const PatientProfile = () => {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Patient Name</th>
+                  <th>Doctor Name</th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Status</th>
@@ -192,7 +192,7 @@ const PatientProfile = () => {
             <div className="appointment-details-card">
               <h2 className="modal-title">Appointment Details</h2>
               <p><strong>ID:</strong> {selectedAppointment.id}</p>
-              <p><strong>Patient Name:</strong> {selectedAppointment.doctorName}</p>
+              <p><strong>Doctor Name:</strong> {selectedAppointment.doctorName}</p>
               <p><strong>Phone:</strong> {selectedAppointment.doctorPhone}</p>
               <p><strong>Date:</strong> {selectedAppointment.date}</p>
               <p><strong>Time:</strong> {selectedAppointment.time}</p>

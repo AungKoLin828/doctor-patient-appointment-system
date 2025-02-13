@@ -91,7 +91,7 @@
       "date": "2025-02-19",
       "time": "10:31",
       "reason": "To discussion",
-      "status": "Pending"
+      "status": "Canceled"
     },
     {
       "id": "APT-2130",
@@ -104,7 +104,7 @@
       "date": "2025-02-25",
       "time": "08:39",
       "reason": "Medical Check-up",
-      "status": "Pending"
+      "status": "Completed"
     },
     {
       "id": "APT-4248",

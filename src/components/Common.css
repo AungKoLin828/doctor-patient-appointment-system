@@ -503,6 +503,10 @@ li {
   color: white;
 }
 
+.status.confirmed {
+  background-color: blue;
+  color: white;
+}
 .status.canceled {
   background-color: #f44336;
   color: white;
