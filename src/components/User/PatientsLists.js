@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import '../Common.css';
 import { useAuth } from '../AuthContext'; // Ensure useAuth is correctly set up
+import CustomModal from '../CustomModal'; // Import Custom Modal
 
 const PatientsList = () => {
   const [patients, setPatients] = useState([]);
@@ -10,9 +10,10 @@ const PatientsList = () => {
   const [filteredPatients, setFilteredPatients] = useState([]);
   const { isAuthenticated, userRole } = useAuth(); // Ensure this hook works properly
   const [error, setError] = useState('');
-  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [patientsPerPage] = useState(6); // Number of patients per page
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [patientDetailsModalIsOpen, setPatientDetailsModalIsOpen] = useState(false);
 
   // Fetch patients data on component mount
   useEffect(() => {
@@ -63,8 +64,19 @@ const PatientsList = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // View Patient Profile
-  const viewProfile = (patientId) => {
-    navigate(`/patient/${patientId}`);
+  // const viewProfile = (patientId) => {
+  //   navigate(`/patient/${patientId}`);
+  // };
+
+  // Open Patient Details in Modal
+  const handleOpenPatientDetails = async (patientId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/profile/patient/${patientId}`);
+      setSelectedPatient(response.data);
+      setPatientDetailsModalIsOpen(true);
+    } catch (error) {
+      console.error('Error fetching doctor details:', error);
+    }
   };
 
   // Delete Patient
@@ -95,8 +107,6 @@ const PatientsList = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Age</th>
-            <th>Address</th>
             <th>Phone</th>
             <th>Actions</th>
           </tr>
@@ -106,14 +116,12 @@ const PatientsList = () => {
             currentPatients.map((patient) => (
               <tr key={patient.id}>
                 <td>{patient.name}</td>
-                <td>{patient.age}</td>
-                <td>{patient.address}</td>
                 <td>{patient.phone}</td>
                 <td>
                   <button
                     type="button"
                     className="add-btn"
-                    onClick={() => viewProfile(patient.id)}
+                    onClick={() => handleOpenPatientDetails(patient.id)}
                   >
                     Detail
                   </button>
@@ -144,6 +152,23 @@ const PatientsList = () => {
         paginate={paginate}
         currentPage={currentPage}
       />
+
+      {/* Patient Details Modal */}
+      <CustomModal isOpen={patientDetailsModalIsOpen} onClose={() => setPatientDetailsModalIsOpen(false)}>
+        <div className="modal-container">
+          {selectedPatient && (
+            <div className="appointment-details-card">
+              <h2 className="modal-title">Patient Information</h2>
+              <p><strong>ID:</strong> {selectedPatient.id}</p>
+              <p><strong>Name:</strong> {selectedPatient.name}</p>
+              <p><strong>Age:</strong> {selectedPatient.age}</p>
+              <p><strong>Phone:</strong> {selectedPatient.phone}</p>
+              <p><strong>Address:</strong> {selectedPatient.address}</p>
+            </div>
+          )}
+        </div>
+      </CustomModal>
+
     </div>
   );
 };

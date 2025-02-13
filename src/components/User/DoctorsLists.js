@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../Common.css';
 import { useAuth } from '../AuthContext';
+import CustomModal from '../CustomModal'; // Import Custom Modal
 
 const DoctorList = () => {
   const [doctors, setDoctors] = useState([]);
@@ -13,6 +14,8 @@ const DoctorList = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [doctorsPerPage] = useState(6);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [doctorDetailsModalIsOpen, setDoctorDetailsModalIsOpen] = useState(false);
 
   useEffect(() => {
     fetchDoctors();
@@ -33,7 +36,6 @@ const DoctorList = () => {
   // Filter doctors based on search query
   useEffect(() => {
     if (searchQuery.trim() === '') {
-      // If search query is empty, show all doctors
       setFilteredDoctors(doctors);
     } else {
       const filtered = doctors.filter((doctor) =>
@@ -43,7 +45,7 @@ const DoctorList = () => {
       );
       setFilteredDoctors(filtered);
     }
-    setCurrentPage(1); // Reset to the first page when search query changes
+    setCurrentPage(1);
   }, [searchQuery, doctors]);
 
   if (error) return <div className="error">{error}</div>;
@@ -56,16 +58,22 @@ const DoctorList = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // View Doctor Profile
-  const viewProfile = (doctorId) => {
-    navigate(`/doctor/${doctorId}`);
+  // Open Doctor Details in Modal
+  const handleOpenDoctorDetails = async (doctorId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/profile/doctor/${doctorId}`);
+      setSelectedDoctor(response.data);
+      setDoctorDetailsModalIsOpen(true);
+    } catch (error) {
+      console.error('Error fetching doctor details:', error);
+    }
   };
 
   // Delete Doctor
   const deleteDoctor = async (doctorId) => {
     try {
       await axios.delete(`http://localhost:5000/api/doctors/${doctorId}`);
-      setDoctors(doctors.filter((doctor) => doctor.id !== doctorId)); // Remove the doctor from the list
+      setDoctors(doctors.filter((doctor) => doctor.id !== doctorId));
       fetchDoctors();
     } catch (error) {
       setError('Error deleting doctor.');
@@ -77,10 +85,10 @@ const DoctorList = () => {
       const response = await axios.get(`http://localhost:5000/api/profile/doctor/${doctorId}`);
       localStorage.setItem('receiverName', response.data.name);
     } catch (error) {
-      console.error('Not Found doctor',error);
+      console.error('Doctor not found', error);
     }
     navigate(`/doctor/chat/${doctorId}`);
-  }
+  };
 
   return (
     <div className="doctor-patient-list-container">
@@ -92,7 +100,7 @@ const DoctorList = () => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      
+
       <table className="doctor-patient-table">
         <thead>
           <tr>
@@ -103,52 +111,71 @@ const DoctorList = () => {
           </tr>
         </thead>
         <tbody>
-        {currentDoctors.length > 0 ? (
-          currentDoctors.map((doctor) => (
-            <tr key={doctor.id}>
-              <td>{doctor.name}</td>
-              <td>{doctor.specialty}</td>
-              <td>{doctor.hospital}</td>
-              <td>
-                <button
-                  type="button"
-                  className="add-btn"
-                  onClick={() => viewProfile(doctor.id)}
-                >
-                  Detail
-                </button>
-                <button
-                  type="button"
-                  className="add-btn"
-                  onClick={() => chatWithDoctor(doctor.id)}
-                >
-                  Chat
-                </button>
-                {isAuthenticated && userRole === 'admin' && (
+          {currentDoctors.length > 0 ? (
+            currentDoctors.map((doctor) => (
+              <tr key={doctor.id}>
+                <td>{doctor.name}</td>
+                <td>{doctor.specialty}</td>
+                <td>{doctor.hospital}</td>
+                <td>
                   <button
                     type="button"
-                    className="remove-btn"
-                    onClick={() => deleteDoctor(doctor.id)}
+                    className="add-btn"
+                    onClick={() => handleOpenDoctorDetails(doctor.id)}
                   >
-                    Delete
+                    Detail
                   </button>
-                )}
-              </td>
-            </tr>
-           ))
+                  {isAuthenticated && userRole === 'patient' && (
+                    <button
+                      type="button"
+                      className="add-btn"
+                      onClick={() => chatWithDoctor(doctor.id)}
+                    >
+                      Chat
+                    </button>
+                  )}
+                  {isAuthenticated && userRole === 'admin' && (
+                    <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={() => deleteDoctor(doctor.id)}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))
           ) : (
             <tr>
-              <td colSpan="6">No doctors found</td> 
+              <td colSpan="6">No doctors found</td>
             </tr>
           )}
         </tbody>
       </table>
       <Pagination
         doctorsPerPage={doctorsPerPage}
-        totalDoctors={filteredDoctors.length} // Use filteredDoctors length here
+        totalDoctors={filteredDoctors.length}
         paginate={paginate}
         currentPage={currentPage}
       />
+
+      {/* Doctor Details Modal */}
+      <CustomModal isOpen={doctorDetailsModalIsOpen} onClose={() => setDoctorDetailsModalIsOpen(false)}>
+        <div className="modal-container">
+          {selectedDoctor && (
+            <div className="appointment-details-card">
+              <h2 className="modal-title">Doctor Information</h2>
+              <p><strong>ID:</strong> {selectedDoctor.id}</p>
+              <p><strong>Phone:</strong> {selectedDoctor.phone}</p>
+              <p><strong>Hospital:</strong> {selectedDoctor.hospital}</p>
+              <p><strong>Specialty:</strong> {selectedDoctor.specialty}</p>
+              <p><strong>Medical License:</strong> {selectedDoctor.license}</p>
+              <p><strong>Address:</strong> {selectedDoctor.address}</p>
+            </div>
+          )}
+        </div>
+      </CustomModal>
     </div>
   );
 };
