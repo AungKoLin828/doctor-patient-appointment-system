@@ -22,20 +22,6 @@ let { users, doctors, patients, admin, appointments } = JSON.parse(fs.readFileSy
 app.use(cors());
 app.use(bodyParser.json());
 
-// Function to read doctors from the JSON file
-const readDoctorsFromFile = () => {
-  try {
-    // Read the file synchronously
-    const data = fs.readFileSync(dataPath, 'utf-8');
-
-    // Parse the JSON string into an array of doctors
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading the doctors file:', error);
-    return []; // Return an empty array if there's an error
-  }
-};
-
 // Registration route
 app.post('/api/register', (req, res) => {
   const { username, password, role, id, name, phone, specialty, license, hospital, educationList, age, address } = req.body;
@@ -190,51 +176,68 @@ app.put("/api/update/doctor/:id", (req, res) => {
   }
 });
 
+// Function to read JSON file
+const readJsonFile = () => {
+  try {
+    const data = fs.readFileSync(dataPath, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(`Error reading data.json:`, error);
+    return { patients: [], users: [] };
+  }
+};
+
+// Function to write JSON file
+const writeJsonFile = (data) => {
+  try {
+    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (error) {
+    console.error(`Error writing to data.json:`, error);
+  }
+};
 
 // Delete a doctor by ID
 app.delete('/api/doctors/:id', (req, res) => {
-  const doctorId = req.params.id;
+  const doctorId = req.params.id; // Ensure the ID is a number
 
-  let doctors = readDoctorsFromFile();
-  // Find the index of the doctor with the given ID
-  const doctorIndex = doctors.findIndex(doctor => doctor.id === doctorId);
-  if (doctorIndex === -1) {
-    return res.status(404).json({ message: 'Doctor not found' });
-  }
-
-  // Find the index of the doctor with the given ID
-  const userIndex = users.findIndex(user => user.id === doctorId);
-  if (userIndex === -1) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-
-  // Remove doctor from the list
-  doctors.splice(doctorIndex, 1);
-  users.splice(userIndex, 1);
-  writeDoctorsToFile(doctors); 
-  writeDoctorsToFile(users); 
-  res.status(200).json({ message: 'Doctor deleted successfully' });
-});
-
-// Delete a patient by ID
-app.delete('/api/patients/:id', (req, res) => {
-  const patientId = req.params.id;
+  // Read current data
+  let data = readJsonFile();
 
   // Find the index of the patient with the given ID
-  const patientsIndex = patients.findIndex(patient => patient.id === patientId);
-  if (patientsIndex === -1) {
+  const doctorExists = data.doctors.some(doctor => doctor.id === doctorId);
+  if (!doctorExists) {
     return res.status(404).json({ message: 'Patient not found' });
   }
 
-  // Find the index of the patient with the given ID
-  const userIndex = users.findIndex(user => user.id === patientId);
-  if (userIndex === -1) {
-    return res.status(404).json({ message: 'User not found' });
+  // Remove patient and user
+  data.doctors = data.doctors.filter(doctor => doctor.id !== doctorId);
+  data.users = data.users.filter(user => user.id !== doctorId);
+  // Save updated data back to JSON file
+  writeJsonFile(data);
+
+  res.status(200).json({ message: 'Doctor deleted successfully' });
+});
+
+// DELETE API - Delete Patient & Associated User
+app.delete('/api/patients/:id', (req, res) => {
+  const patientId = req.params.id; // Convert ID to number
+
+  // Read current data
+  let data = readJsonFile();
+
+  // Check if patient exists
+  const patientExists = data.patients.some(patient => patient.id === patientId);
+  if (!patientExists) {
+    return res.status(404).json({ message: 'Patient not found' });
   }
 
-  // Remove doctor from the list
-  patients.splice(patientsIndex, 1);
-  users.splice(userIndex, 1);
+  // Remove patient and user
+  data.patients = data.patients.filter(patient => patient.id !== patientId);
+  data.users = data.users.filter(user => user.id !== patientId);
+
+  // Save updated data back to JSON file
+  writeJsonFile(data);
+
   res.status(200).json({ message: 'Patient deleted successfully' });
 });
 
@@ -346,14 +349,47 @@ app.put('/api/appointments/status/:id', (req, res) => {
   res.status(200).json({ message: 'Appointment updated successfully', appointment: appointments[appointmentIndex] });
 });
 
-// For Admin Site
+
+const getUserCountsFromJSON = () => {
+  try {
+    console.log("Reading JSON file from:", dataPath);
+
+    const rawData = fs.readFileSync(dataPath, 'utf-8'); // Read the JSON file
+
+    const data = JSON.parse(rawData); // Parse the JSON data
+
+    // Access the 'users' array from the JSON object
+    const users = data.users;
+
+    // Check if 'users' is an array
+    if (!Array.isArray(users)) {
+      throw new Error("'users' is not an array in the JSON data");
+    }
+
+    // Count doctors and patients
+    const doctorCount = users.reduce((count, user) => count + (user.role === 'doctor' ? 1 : 0), 0);
+    const patientCount = users.reduce((count, user) => count + (user.role === 'patient' ? 1 : 0), 0);
+
+    console.log(`Doctor Count: ${doctorCount}, Patient Count: ${patientCount}`);
+
+    return { doctorCount, patientCount };
+  } catch (error) {
+    console.error('Error reading JSON file:', error);
+    return { doctorCount: 0, patientCount: 0 };
+  }
+};
+
+// API Endpoint to Get Doctor and Patient Counts
 app.get('/api/admin/user-usage', (req, res) => {
-  const userData = [
-    { name: 'User 1', usage: 5 },
-    { name: 'User 2', usage: 8 },
-    { name: 'User 3', usage: 12 },
-  ];
-  res.json(userData);
+  const { doctorCount, patientCount } = getUserCountsFromJSON();
+
+  console.log("Doctor Count " + doctorCount);
+  console.log("Patient Count " + patientCount);
+
+  res.status(200).json([
+    { name: 'Doctors', count: doctorCount },
+    { name: 'Patients', count: patientCount },
+  ]);
 });
 
 // WebSocket server logic

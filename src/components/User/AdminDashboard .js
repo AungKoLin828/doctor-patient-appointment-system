@@ -22,47 +22,47 @@ ChartJS.register(
 );
 
 const AdminDashboard = () => {
-  const [userData, setUserData] = useState([]);
+  const [userCounts, setUserCounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserCounts = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/admin/user-usage');
         if (Array.isArray(response.data)) {
-          setUserData(response.data);
+          setUserCounts(response.data);
         } else {
           setError('Unexpected data format');
         }
         setLoading(false);
       } catch (error) {
-        setError('Error fetching user data');
+        setError('Error fetching user counts');
         setLoading(false);
       }
     };
 
-    fetchUserData();
+    fetchUserCounts();
   }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="error">{error}</div>;
 
   // Prepare data for the graph
-  const labels = userData.map(user => user.name);
-  const usageData = userData.map(user => user.usage);
+  const labels = userCounts.map(user => user.name);
+  const counts = userCounts.map(user => user.count);
 
   const chartData = {
     labels: labels,
     datasets: [
       {
-        label: 'User Usage (in hours)',
-        backgroundColor: 'rgba(75,192,192,0.6)',
-        borderColor: 'rgba(75,192,192,1)',
+        label: 'User Count',
+        backgroundColor: ['#4CAF50', '#2196F3'],
+        borderColor: ['#388E3C', '#1976D2'],
         borderWidth: 1,
-        hoverBackgroundColor: 'rgba(75,192,192,0.8)',
-        hoverBorderColor: 'rgba(75,192,192,1)',
-        data: usageData,
+        hoverBackgroundColor: ['#66BB6A', '#42A5F5'],
+        hoverBorderColor: ['#388E3C', '#1976D2'],
+        data: counts,
       },
     ],
   };

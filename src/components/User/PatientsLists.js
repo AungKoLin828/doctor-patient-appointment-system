@@ -23,6 +23,7 @@ const PatientsList = () => {
   const fetchPatients = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/patients');
+      setPatients([]);
       setPatients(response.data || []); // Ensure patients is always an array
       setFilteredPatients(response.data || []); // Initially show all patients
     } catch (error) {
@@ -63,11 +64,6 @@ const PatientsList = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // View Patient Profile
-  // const viewProfile = (patientId) => {
-  //   navigate(`/patient/${patientId}`);
-  // };
-
   // Open Patient Details in Modal
   const handleOpenPatientDetails = async (patientId) => {
     try {
@@ -84,7 +80,8 @@ const PatientsList = () => {
     try {
       await axios.delete(`http://localhost:5000/api/patients/${patientId}`);
       setPatients(patients.filter((patient) => patient.id !== patientId)); // Remove deleted patient from state
-      fetchPatients();
+      setPatients(prevPatients => prevPatients.filter((patient) => patient.id !== patientId));
+      setFilteredPatients(prevFiltered => prevFiltered.filter((patient) => patient.id !== patientId));
     } catch (error) {
       setError('Error deleting patient.');
     }

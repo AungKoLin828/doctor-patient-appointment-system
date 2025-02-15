@@ -13,12 +13,6 @@
       "id": "D4752"
     },
     {
-      "phone": "09450821622",
-      "password": "password1",
-      "role": "doctor",
-      "id": "D5124"
-    },
-    {
       "phone": "09450821620",
       "password": "password1",
       "role": "patient",
@@ -47,27 +41,6 @@
         }
       ],
       "address": "No.10,Theri Myaing"
-    },
-    {
-      "id": "D5124",
-      "name": "AungKoMin",
-      "phone": "09450821622",
-      "specialty": "Neurology Specialist",
-      "license": "NP-667788",
-      "hospital": "Yangon Hospital",
-      "educationList": [
-        {
-          "degree": "MBBS",
-          "institution": "Yangon",
-          "year": "2011"
-        },
-        {
-          "degree": "MCh",
-          "institution": "Yangon",
-          "year": "2011"
-        }
-      ],
-      "address": "No.11, Neik Ban Street"
     }
   ],
   "patients": [

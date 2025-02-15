@@ -73,8 +73,9 @@ const DoctorList = () => {
   const deleteDoctor = async (doctorId) => {
     try {
       await axios.delete(`http://localhost:5000/api/doctors/${doctorId}`);
-      setDoctors(doctors.filter((doctor) => doctor.id !== doctorId));
-      fetchDoctors();
+      // Update state immediately to remove the deleted doctor
+      setDoctors(prevDoctors => prevDoctors.filter(doctor => doctor.id !== doctorId));
+      setFilteredDoctors(prevFiltered => prevFiltered.filter(doctor => doctor.id !== doctorId));
     } catch (error) {
       setError('Error deleting doctor.');
     }
