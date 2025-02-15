@@ -96,28 +96,27 @@ const Chat = () => {
     if (!message.trim() || !recipient) {
       return;
     }
-    
-    if (message.trim() && recipient.trim()) {
-      const messagePayload = {
-        type: 'private_message',
-        sender: userId,
-        recipient,
-        content: message.trim(),
-      };
-      socket.send(JSON.stringify(messagePayload));
-      setChat((prevChat) => [
-        ...prevChat,
-        { sender: 'You', content: message, reactions: [] },
-      ]);
-      setMessage('');
-      messageInputRef.current.focus();
-    }
+
+    const messagePayload = {
+      type: 'private_message',
+      sender: userId,
+      recipient,
+      content: message.trim(),
+    };
+    socket.send(JSON.stringify(messagePayload));
+    setChat((prevChat) => [
+      ...prevChat,
+      { sender: 'You', content: message.trim(), reactions: [] },
+    ]);
+    setMessage('');
+    setShowEmojiPicker(false); // Hide emoji picker after sending
+    messageInputRef.current.focus();
   };
 
   // Add emoji to message
   const addEmojiToMessage = (emoji) => {
     setMessage((prevMessage) => prevMessage + emoji.emoji);
-    setShowEmojiPicker(false);
+    setShowEmojiPicker(false); // Hide emoji picker after selection
   };
 
   // Add reaction to a message
@@ -247,13 +246,14 @@ const Chat = () => {
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             style={{
               position: 'absolute',
-              left: '300px',
+              left: '288px',
               top: '50%',
               transform: 'translateY(-50%)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
               fontSize: '16px',
+              width: '55px',
             }}
           >
             😊
