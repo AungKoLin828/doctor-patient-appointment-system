@@ -96,7 +96,7 @@ const Chat = () => {
     if (!message.trim() || !recipient) {
       return;
     }
-
+    
     if (message.trim() && recipient.trim()) {
       const messagePayload = {
         type: 'private_message',
@@ -104,7 +104,6 @@ const Chat = () => {
         recipient,
         content: message.trim(),
       };
-
       socket.send(JSON.stringify(messagePayload));
       setChat((prevChat) => [
         ...prevChat,

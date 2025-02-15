@@ -93,7 +93,7 @@ const DoctorList = () => {
 
   return (
     <div className="doctor-patient-list-container">
-      <h1 className="doctor-patient-list-title">Doctor List</h1>
+      <h1 className="doctor-patient-list-title">Doctors List</h1>
       <input
         type="text"
         className="search-box"

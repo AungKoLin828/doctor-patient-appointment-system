@@ -23,7 +23,6 @@ const PatientsList = () => {
   const fetchPatients = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/patients');
-      setPatients([]);
       setPatients(response.data || []); // Ensure patients is always an array
       setFilteredPatients(response.data || []); // Initially show all patients
     } catch (error) {
@@ -79,9 +78,18 @@ const PatientsList = () => {
   const deletePatient = async (patientId) => {
     try {
       await axios.delete(`http://localhost:5000/api/patients/${patientId}`);
-      setPatients(patients.filter((patient) => patient.id !== patientId)); // Remove deleted patient from state
-      setPatients(prevPatients => prevPatients.filter((patient) => patient.id !== patientId));
-      setFilteredPatients(prevFiltered => prevFiltered.filter((patient) => patient.id !== patientId));
+      
+      // Update both patients and filteredPatients states
+      setPatients((prevPatients) => {
+        const updatedPatients = prevPatients.filter((patient) => patient.id !== patientId);
+        console.log('Updated patients:', updatedPatients);
+        return updatedPatients;
+      });
+      setFilteredPatients((prevFiltered) => {
+        const updatedFiltered = prevFiltered.filter((patient) => patient.id !== patientId);
+        console.log('Updated filtered patients:', updatedFiltered);
+        return updatedFiltered;
+      });
     } catch (error) {
       setError('Error deleting patient.');
     }
@@ -89,7 +97,7 @@ const PatientsList = () => {
 
   return (
     <div className="doctor-patient-list-container">
-      <h1 className="doctor-patient-list-title">Patient List</h1>
+      <h1 className="doctor-patient-list-title">Patients List</h1>
       
       {/* Search Box */}
       <input

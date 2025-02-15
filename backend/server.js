@@ -86,11 +86,14 @@ app.get('/api/profile/doctor/:id', (req, res) => {
 });
 
 app.get('/api/doctors', (req, res) => {
-  res.json(doctors);
+  let data = readJsonFile();
+  res.json(data.doctors);
 });
 
 app.get('/api/patients', (req, res) => {
-  res.json(patients);
+  // Read current data
+  let data = readJsonFile();
+  res.json(data.patients);
 });
 
 //Update Patient
