@@ -24,7 +24,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const { data } = await axios.post('http://localhost:5000/api/login', { username, password });
+      //const { data } = await axios.post('http://localhost:5000/api/login', { username, password });
+      const { data } = await axios.post('/api/login', { username, password });
       setIsAuthenticated(true);
       setUserRole(data.role);
       setUserId(data.id);
