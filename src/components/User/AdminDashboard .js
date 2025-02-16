@@ -29,8 +29,8 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchUserCounts = async () => {
       try {
-        //const response = await axios.get('http://localhost:5000/api/admin/user-usage');
-        const response = await axios.get('/api/admin/user-usage');
+        const response = await axios.get('http://localhost:5000/api/admin/user-usage');
+        //const response = await axios.get('/api/admin/user-usage');
         if (Array.isArray(response.data)) {
           setUserCounts(response.data);
         } else {
