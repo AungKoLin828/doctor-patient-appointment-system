@@ -7,7 +7,6 @@ import { useAuth } from '../AuthContext';
 import CustomModal from '../CustomModal'; // Import Custom Modal
 import AppointmentModal from '../AppointmentModal'; // Import Appointment Modal
 
-
 const DoctorProfile = () => {
   const { id } = useParams();
   const { isAuthenticated, userRole } = useAuth(); // Fetch user data from AuthContext
