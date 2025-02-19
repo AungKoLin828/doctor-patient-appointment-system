@@ -207,7 +207,7 @@ const DoctorList = () => {
                 <td>
                   <button
                     type="button"
-                    className="add-btn" style={{ width: '30%', height:'55px'}}
+                    className="add-btn" style={{ width: '30%'}}
                     onClick={() => handleOpenDoctorDetails(doctor.id)}
                   >
                     Detail
@@ -216,17 +216,17 @@ const DoctorList = () => {
                     <>
                       <button
                         type="button"
-                        className="add-btn" style={{ width: '30%',height:'55px'}}
+                        className="add-btn" style={{ width: '30%'}}
                         onClick={() => chatWithDoctor(doctor.id)}
                       >
                         Chat
                       </button>
                       <button
                         type="button"
-                        className="add-btn" style={{ width: '38%'}}
+                        className="add-btn" style={{ width: '40%'}}
                         onClick={() => handleMakeAppointment(doctor.id)}
                       >
-                        Make Appointment
+                        Appointment
                       </button>
                     </>
                   )}
