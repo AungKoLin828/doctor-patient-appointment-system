@@ -333,9 +333,31 @@ app.get('/api/view-patient-appointments', (req, res) => {
 });
 
 // Update Appointment
+// app.put('/api/appointments/status/:id', (req, res) => {
+//   const { id } = req.params;
+//   const updatedData = req.body;
+
+//   console.log(updatedData);
+//   // Find appointment index
+//   const appointmentIndex = appointments.findIndex(appointment => appointment.id === id);
+//   if (appointmentIndex === -1) {
+//     return res.status(404).json({ message: 'Appointment not found' });
+//   }
+
+//   // Update appointment details (e.g., status)
+//   appointments[appointmentIndex] = { ...appointments[appointmentIndex], ...updatedData };
+
+//   // Write updated data back to the JSON file
+//   fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
+
+//   res.status(200).json({ message: 'Appointment updated successfully', appointment: appointments[appointmentIndex] });
+// });
+
 app.put('/api/appointments/status/:id', (req, res) => {
   const { id } = req.params;
   const updatedData = req.body;
+
+  console.log(updatedData);
 
   // Find appointment index
   const appointmentIndex = appointments.findIndex(appointment => appointment.id === id);
@@ -347,11 +369,14 @@ app.put('/api/appointments/status/:id', (req, res) => {
   appointments[appointmentIndex] = { ...appointments[appointmentIndex], ...updatedData };
 
   // Write updated data back to the JSON file
-  fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
-
-  res.status(200).json({ message: 'Appointment updated successfully', appointment: appointments[appointmentIndex] });
+  try {
+    fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
+    res.status(200).json({ message: 'Appointment updated successfully', appointment: appointments[appointmentIndex] });
+  } catch (error) {
+    console.error('Error writing to file:', error);
+    res.status(500).json({ message: 'Error updating appointment status' });
+  }
 });
-
 
 const getUserCountsFromJSON = () => {
   try {
