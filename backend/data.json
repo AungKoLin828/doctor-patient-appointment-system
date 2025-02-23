@@ -35,6 +35,18 @@
       "password": "password1",
       "role": "patient",
       "id": "P3181"
+    },
+    {
+      "phone": "09450821629",
+      "password": "password1",
+      "role": "patient",
+      "id": "P0017"
+    },
+    {
+      "phone": "09450821626",
+      "password": "password1",
+      "role": "doctor",
+      "id": "D3286"
     }
   ],
   "doctors": [
@@ -69,6 +81,22 @@
         }
       ],
       "address": "Yangon"
+    },
+    {
+      "id": "D3286",
+      "name": "Ba Maung",
+      "phone": "09450821626",
+      "specialty": "Heart Specialist",
+      "license": "RN-112235",
+      "hospital": "Yangon",
+      "educationList": [
+        {
+          "degree": "MBBS",
+          "institution": "Yanogn",
+          "year": "1980"
+        }
+      ],
+      "address": "Insein,Yangon"
     }
   ],
   "patients": [
@@ -91,6 +119,13 @@
       "name": "MaungMaung01",
       "phone": "09450821633",
       "age": "33",
+      "address": "Yangon"
+    },
+    {
+      "id": "P0017",
+      "name": "Patient01",
+      "phone": "09450821629",
+      "age": "30",
       "address": "Yangon"
     }
   ],

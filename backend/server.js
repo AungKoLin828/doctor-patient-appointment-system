@@ -24,21 +24,24 @@ app.use(bodyParser.json());
 
 // Registration route
 app.post('/api/register', (req, res) => {
-  const { username, password, role, id, name, phone, specialty, license, hospital, educationList, age, address } = req.body;
-
+  const {password, role, id, name, phone, specialty, license, hospital, educationList, age, address } = req.body;
+ 
   // Check if username or ID already exists
   const existingUser = users.find(user => user.phone === phone || user.id === id);
   if (existingUser) {
+    console.log("Erro" + id + "phone " + phone);
     return res.status(400).json({ message: 'Username or ID already exists' });
   }
-
+  console.log("OK");
   // Add new user to the users array
   //users.push({ username, password, role, id });
+  
   users.push({ phone, password, role, id });
 
   // Add new user to the corresponding role-based array
   if (role === 'doctor') {
     // Push doctor-specific details
+    console.log("doctor data " + { id, name, phone, specialty, license, hospital, educationList, address });
     doctors.push({ id, name, phone, specialty, license, hospital, educationList, address });
   } else if (role === 'patient') {
     // Push patient-specific details
@@ -331,27 +334,6 @@ app.get('/api/view-patient-appointments', (req, res) => {
     res.status(500).json({ message: "Error retrieving appointments" });
   }
 });
-
-// Update Appointment
-// app.put('/api/appointments/status/:id', (req, res) => {
-//   const { id } = req.params;
-//   const updatedData = req.body;
-
-//   console.log(updatedData);
-//   // Find appointment index
-//   const appointmentIndex = appointments.findIndex(appointment => appointment.id === id);
-//   if (appointmentIndex === -1) {
-//     return res.status(404).json({ message: 'Appointment not found' });
-//   }
-
-//   // Update appointment details (e.g., status)
-//   appointments[appointmentIndex] = { ...appointments[appointmentIndex], ...updatedData };
-
-//   // Write updated data back to the JSON file
-//   fs.writeFileSync(dataPath, JSON.stringify({ users, doctors, patients, admin, appointments }, null, 2), 'utf-8');
-
-//   res.status(200).json({ message: 'Appointment updated successfully', appointment: appointments[appointmentIndex] });
-// });
 
 app.put('/api/appointments/status/:id', (req, res) => {
   const { id } = req.params;
